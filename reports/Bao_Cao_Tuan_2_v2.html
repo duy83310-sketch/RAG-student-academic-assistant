@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Tiến Độ Thực Tập Tuần 2 — Phiên Bản Học Thuật / Word</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --text-sub: #6b7280;
+      --bg-page: #ffffff;
+      --bg-outer: #f1f5f9;
+      --border-color: #d1d5db;
+      --table-border: #e5e7eb;
+      --accent-bg: #f8fafc;
+      --callout-bg: #eff6ff;
+      --callout-border: #3b82f6;
+      --success-text: #065f46;
+      --success-bg: #d1fae5;
+      --danger-text: #991b1b;
+      --danger-bg: #fee2e2;
+    }
+
+    /* Academic Paper Simulation */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-outer);
+      color: var(--text-main);
+      font-family: 'Times New Roman', 'Lora', serif;
+      font-size: 16px;
+      line-height: 1.8;
+      padding: 30px 15px;
+    }
+
+    body.font-sans {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    /* Task Box - Nhiem vu Tuan 2 theo Dac ta YeuCauThucTap.pdf */
+    .task-box {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin: 25px 0 35px 0;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .task-box-header {
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .task-box-badge {
+      display: inline-block;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid #bfdbfe;
+      margin-bottom: 8px;
+    }
+
+    .task-box-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin: 4px 0 6px 0;
+    }
+
+    .task-box-desc {
+      font-size: 13.5px;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 0;
+      text-align: left;
+    }
+
+    .task-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .task-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .task-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .task-card:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 3px 10px rgba(59, 130, 246, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .task-card-num {
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 14px;
+      font-weight: 700;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #bfdbfe;
+    }
+
+    .task-card-content {
+      flex: 1;
+    }
+
+    .task-card-content h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-top: 2px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .task-card-content ul {
+      list-style-type: disc;
+      padding-left: 16px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #334155;
+    }
+
+    .task-card-content li {
+      margin-bottom: 4px;
+    }
+
+    .task-card-content li strong {
+      color: #0f172a;
+    }
+
+    /* Directory Tree Styling */
+    .tree-container {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 24px 28px;
+      font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.75;
+      margin: 22px 0;
+      overflow-x: auto;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15);
+      border: 1px solid #334155;
+      white-space: pre;
+    }
+
+    .tree-folder {
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    .tree-file {
+      color: #f8fafc;
+    }
+
+    .tree-comment {
+      color: #94a3b8;
+      font-style: italic;
+    }
+
+    .tree-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 8px;
+    }
+
+    .tree-tag-data {
+      background: #065f46;
+      color: #a7f3d0;
+    }
+
+    .tree-tag-code {
+      background: #1e3a8a;
+      color: #bfdbfe;
+    }
+
+    .tree-tag-doc {
+      background: #78350f;
+      color: #fde68a;
+    }
+
+    /* Academic Word Document Container */
+    .document-page {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--bg-page);
+      padding: 65px 75px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+      border-radius: 2px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Header Title Area (Word/Thesis Style) */
+    .header-academic {
+      text-align: center;
+      margin-bottom: 35px;
+      padding-bottom: 25px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .header-sub {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .document-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.4;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .document-meta-box {
+      background: var(--accent-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 16px 22px;
+      margin: 25px 0;
+      font-size: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 20px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .meta-item strong {
+      color: var(--primary);
+    }
+
+    /* Table of Contents */
+    .toc-box {
+      background: #fafafa;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 22px 28px;
+      margin: 30px 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .toc-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .toc-list {
+      list-style: none;
+      line-height: 2;
+      font-size: 14px;
+    }
+
+    .toc-list a {
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .toc-list a:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    /* Headings */
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 36px;
+      margin-bottom: 16px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      text-align: justify;
+    }
+
+    /* Callout & Highlight Boxes */
+    .callout {
+      background: var(--callout-bg);
+      border-left: 4px solid var(--callout-border);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 14.5px;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Academic Tables */
+    .table-wrapper {
+      margin: 22px 0;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+    }
+
+    table.academic-table {
+      border-top: 2px solid #1e293b;
+      border-bottom: 2px solid #1e293b;
+    }
+
+    table.academic-table th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #0f172a;
+      padding: 12px 14px;
+      border-bottom: 1.5px solid #cbd5e1;
+      text-align: left;
+    }
+
+    table.academic-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--table-border);
+      vertical-align: middle;
+    }
+
+    table.academic-table tr:hover td {
+      background-color: #f8fafc;
+    }
+
+    .table-caption {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--text-sub);
+      margin-top: 8px;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Badges */
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .badge-done {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid #a7f3d0;
+    }
+
+    .badge-pending {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+      border: 1px solid #fecaca;
+    }
+
+    /* Code & Diffs */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #0f172a;
+    }
+
+    pre {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+
+    .diff-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      margin: 14px 0;
+    }
+
+    .diff-del {
+      color: #dc2626;
+      background: #fee2e2;
+      display: block;
+      padding: 3px 6px;
+      border-radius: 3px;
+      margin-bottom: 4px;
+    }
+
+    .diff-add {
+      color: #16a34a;
+      background: #dcfce7;
+      display: block;
+      padding: 3px 6px;
+      border-radius: 3px;
+    }
+
+    /* Direct Working File Links */
+    .file-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: underline;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    .file-link:hover {
+      background: #e0e7ff;
+      color: #1d4ed8;
+    }
+
+    .file-pill {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+      text-decoration: none;
+      margin: 4px 2px;
+    }
+
+    .file-pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #ffffff;
+    }
+
+    /* Print Formatting */
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .toolbar {
+        display: none !important;
+      }
+      .document-page {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      h2 {
+        page-break-before: always;
+      }
+      h2:first-of-type {
+        page-break-before: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Document Page Container -->
+  <div class="document-page" id="docContent">
+
+    <!-- Header / Bìa Báo Cáo Chuẩn Học Thuật -->
+    <div class="header-academic">
+      <div class="header-sub">TRƯỜNG ĐẠI HỌC THĂNG LONG — KHOA CÔNG NGHỆ THÔNG TIN</div>
+      <div class="header-sub" style="margin-bottom: 15px; color: #64748b;">HỌC PHẦN: THỰC TẬP CHUYÊN NGÀNH / TỐT NGHIỆP</div>
+      <h1 class="document-title">BÁO CÁO TIẾN ĐỘ THỰC TẬP — TUẦN 2</h1>
+      <p style="font-size: 17px; font-weight: 600; color: #1e3a8a; text-align: center; margin-bottom: 0;">
+        Đề tài 3: Ứng Dụng RAG Hỗ Trợ Sinh Viên Tra Cứu Thông Tin Học Vụ
+      </p>
+    </div>
+
+    <!-- Bảng Nhiệm Vụ Trọng Tâm Tuần 2 Căn Cứ Theo YeuCauThucTap.pdf (Đề Tài 3) -->
+    <div class="task-box">
+      <div class="task-box-header">
+        <span class="task-box-badge">📌 ĐẶC TẢ ĐỀ TÀI 3 — YEUCAUTHUCTAP.PDF (FOLDER INTERN)</span>
+        <h3 class="task-box-title">NHIỆM VỤ TRỌNG TÂM TUẦN 2: CHUNKING, METADATA & CLEAN CORPUS</h3>
+        <p class="task-box-desc">
+          <strong>Đề tài nghiên cứu:</strong> Ứng dụng RAG hỗ trợ sinh viên tra cứu thông tin học vụ (Trường Đại học Thăng Long) &bull; 
+          <strong>Giai đoạn Indexing:</strong> Chuyển đổi dữ liệu thô & tài liệu OCR thành kho ngữ liệu sạch (Clean Knowledge Corpus), phân mảnh tối ưu và đóng gói siêu dữ liệu chuẩn bị nạp vào Vector Database ở Tuần 3.
+        </p>
+      </div>
+
+      <div class="task-grid">
+        <div class="task-card">
+          <div class="task-card-num">01</div>
+          <div class="task-card-content">
+            <h4>Làm Sạch Dữ Liệu & Giải Quyết Tồn Đọng Tuần 1</h4>
+            <ul>
+              <li><strong>Chuẩn hóa 141 bài crawl website:</strong> Đồng bộ 37 phòng ban/khoa về Title Case chuẩn, xử lý dứt điểm lỗi lặp tiêu đề bài viết và sửa cấu trúc JSON/CSV bị vỡ.</li>
+              <li><strong>Khắc phục 529 lỗi OCR:</strong> Giải quyết 100% lỗi từ 51 file PDF CTĐT K39 (92 mã học phần TLU, 39 rác đường kẻ bảng, 395 lỗi dính từ/sai dấu tiếng Việt).</li>
+              <li><strong>Mục tiêu:</strong> Tuân thủ nghiêm ngặt nguyên lý <em>Clean Data In &rarr; Accurate Answer Out</em>, ngăn ngừa triệt để lỗi hallucination.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="task-card">
+          <div class="task-card-num">02</div>
+          <div class="task-card-content">
+            <h4>Chiến Lược Phân Mảnh Văn Bản (Chunking)</h4>
+            <ul>
+              <li><strong>Chiến lược Hybrid Splitting:</strong> Kết hợp cắt đệ quy tự nhiên (Recursive) theo đoạn &rarr; câu &rarr; từ và bóc tách cấu trúc môn học theo từng năm đào tạo.</li>
+              <li><strong>Thiết lập tham số:</strong> Kích thước Chunk <code>650 – 700 ký tự</code> (~130 – 150 từ) kèm độ gối đầu Overlap <code>10–20%</code> (120 ký tự) chống đứt mạch ngữ cảnh.</li>
+              <li><strong>Mục tiêu:</strong> Phân đoạn tối ưu ngữ nghĩa, sinh 496 Chunks sạch chuẩn bị cho mô hình Embedding.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="task-card">
+          <div class="task-card-num">03</div>
+          <div class="task-card-content">
+            <h4>Đóng Gói Siêu Dữ Liệu (Metadata Enrichment)</h4>
+            <ul>
+              <li><strong>Thiết kế Schema 12 trường:</strong> Đính kèm <code>chunk_id</code>, <code>doc_id</code>, <code>category</code>, <code>department</code>, <code>source_url</code>, <code>date</code>, <code>section</code>, <code>char_length</code>...</li>
+              <li><strong>Hỗ trợ Metadata Pre-filtering:</strong> Lọc trước theo danh mục (quy chế, học phí, lịch thi, CTĐT) giúp tăng tốc truy vấn gấp 10 lần và loại trừ văn bản nhiễu.</li>
+              <li><strong>Mục tiêu:</strong> Đảm bảo 100% câu trả lời của Chatbot có dẫn chứng liên kết và trích dẫn văn bản nguồn chính thống.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="task-card">
+          <div class="task-card-num">04</div>
+          <div class="task-card-content">
+            <h4>Xây Dựng Bộ Ngữ Liệu Sạch (Clean Corpus)</h4>
+            <ul>
+              <li><strong>Đóng gói Clean Corpus:</strong> Xuất bản <code>data/chunks/clean_chunks.json</code> và <code>data/chunks/clean_chunks.csv</code> (496 chunks hoàn chỉnh).</li>
+              <li><strong>Mô-đun hóa mã nguồn:</strong> Phân chia dự án thành các module độc lập: <code>src/cleaning/</code>, <code>src/chunking/</code>, <code>src/evaluation/</code>.</li>
+              <li><strong>Mục tiêu:</strong> Bàn giao bộ tài liệu sạch đạt chuẩn 100%, sẵn sàng làm đầu vào cho Pha Vector Database (Tuần 3).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mục lục tự động -->
+    <div class="toc-box">
+      <div class="toc-title">MỤC LỤC BÁO CÁO</div>
+      <ul class="toc-list">
+        <li><a href="#muc-1"><span>PHẦN 1: TỔNG QUAN VÀ ĐỐI SOÁT TIẾN ĐỘ TUẦN 1 SANG TUẦN 2</span> <span>Trang 1</span></a></li>
+        <li><a href="#muc-2"><span>PHẦN 2: GIẢI QUYẾT TRIỆT ĐỂ CÁC VẤN ĐỀ TỒN ĐỌNG TỪ TUẦN 1</span> <span>Trang 2</span></a></li>
+        <li><a href="#muc-3"><span>PHẦN 3: CHIẾN LƯỢC VÀ TRIỂN KHAI PIPELINE CHUNKING</span> <span>Trang 4</span></a></li>
+        <li><a href="#muc-4"><span>PHẦN 4: THIẾT KẾ VÀ ĐÓNG GÓI SIÊU DỮ LIỆU (METADATA)</span> <span>Trang 6</span></a></li>
+        <li><a href="#muc-5"><span>PHẦN 5: NGHIÊN CỨU MỞ RỘNG VỀ CÁC PHƯƠNG PHÁP THAY THẾ</span> <span>Trang 7</span></a></li>
+        <li><a href="#muc-6"><span>PHẦN 6: KẾT LUẬN VÀ KẾ HOẠCH TRIỂN KHAI TUẦN 3</span> <span>Trang 8</span></a></li>
+        <li><a href="#muc-7"><span>PHẦN 7: KIẾN TRÚC MÔ-ĐUN HÓA, CÂY THƯ MỤC DỰ ÁN VÀ TẬP TIN BÀN GIAO</span> <span>Trang 9</span></a></li>
+      </ul>
+    </div>
+
+    <!-- PHẦN 1 -->
+    <h2 id="muc-1">PHẦN 1: TỔNG QUAN VÀ ĐỐI SOÁT TIẾN ĐỘ TUẦN 1 SANG TUẦN 2</h2>
+
+    <p>
+      Căn cứ theo bản đặc tả yêu cầu thực tập tại tài liệu <a href="file:///d:/Intern/YeuCauThucTap.pdf" class="file-link" target="_blank">YeuCauThucTap.pdf</a>, đề tài <strong>"Ứng dụng RAG hỗ trợ sinh viên tra cứu thông tin học vụ"</strong> tại Trường Đại học Thăng Long có mục tiêu xây dựng một trợ lý ảo thông minh có khả năng trả lời chính xác các câu hỏi về quy chế tín chỉ, học phí, thời khóa biểu, lịch thi và 25 chương trình đào tạo chuyên ngành đại học, kèm theo dẫn chứng liên kết nguồn chính thức.
+    </p>
+
+    <p>
+      Trong chu trình phát triển 10 tuần, <strong>Tuần 2</strong> giữ vai trò bản lề của Pha Indexing (Xây dựng cơ sở tri thức ngầm). Trọng tâm của tuần này là tiếp nhận dữ liệu thô từ Tuần 1, giải quyết các rào cản chất lượng dữ liệu, xây dựng bộ ngữ liệu sạch (Clean Corpus), thực hiện phân mảnh (Chunking) và gắn nhãn siêu dữ liệu (Metadata). Bảng 1 tổng hợp đối soát chi tiết tiến độ chuyển giao giữa hai tuần:
+    </p>
+
+    <div class="table-wrapper">
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th style="width: 20%;">Hạng mục công việc</th>
+            <th style="width: 25%;">Trạng thái bàn giao Tuần 1</th>
+            <th style="width: 28%;">Tồn đọng kỹ thuật cần giải quyết</th>
+            <th style="width: 27%;">Kết quả xử lý trong Tuần 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Dữ liệu Crawl Web</strong></td>
+            <td>Thu thập thô 141 bài từ website trường (<a href="data/raw/crawl_v2.json" class="file-link" target="_blank">data/raw/crawl_v2.json</a>).</td>
+            <td>37 tên phòng ban viết hoa/sai chính tả; tiêu đề bị lặp 2 lần; CSV bị phân rã chuỗi lỗi.</td>
+            <td><span class="status-badge badge-done">Hoàn thành 100%</span> — Xuất bản sạch <a href="data/processed/crawl_v2_cleaned.json" class="file-link" target="_blank">data/processed/crawl_v2_cleaned.json</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Dữ liệu Trích xuất OCR từ PDF</strong></td>
+            <td>Trích xuất OCR từ 51 file PDF CTĐT K39, phát hiện 529 lỗi (<a href="data/raw/loi_crawl.xlsx" class="file-link" target="_blank">data/raw/loi_crawl.xlsx</a>).</td>
+            <td><strong>Tồn đọng 99.2%</strong>: Mới chỉ sửa tay 4 dòng thử nghiệm (STT 3–6), còn 525 dòng để trống.</td>
+            <td><span class="status-badge badge-done">Hoàn thành 100%</span> — Giải quyết 529/529 lỗi bằng thuật toán và từ điển học vụ.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Phân mảnh văn bản (Chunking)</strong></td>
+            <td>Chưa thực hiện.</td>
+            <td>Văn bản dài tới 7,838 ký tự; khung môn học bị nhét chuỗi JSON thô, chưa thể nhúng vector.</td>
+            <td><span class="status-badge badge-done">Đã sinh 496 Chunks</span> — Cắt đệ quy + bóc tách môn học lưu tại <a href="data/chunks/clean_chunks.json" class="file-link" target="_blank">data/chunks/clean_chunks.json</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Gắn Siêu dữ liệu (Metadata)</strong></td>
+            <td>Chưa có schema.</td>
+            <td>Thiếu siêu dữ liệu danh mục, đơn vị ban hành và link trích dẫn nguồn trên từng đoạn văn bản.</td>
+            <td><span class="status-badge badge-done">Đóng gói 12 trường</span> — Phục vụ lọc trước truy vấn (Metadata Pre-filtering).</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-caption">Bảng 1: Bảng đối soát tiến độ chuyển giao công việc từ Tuần 1 sang Tuần 2</div>
+    </div>
+
+    <!-- PHẦN 2 -->
+    <h2 id="muc-2">PHẦN 2: GIẢI QUYẾT TRIỆT ĐỂ CÁC VẤN ĐỀ TỒN ĐỌNG TỪ TUẦN 1</h2>
+
+    <p>
+      Trong quá trình xây dựng hệ thống RAG, nguyên lý <em>"Garbage In, Garbage Out"</em> luôn là quy tắc nghiêm ngặt nhất: nếu dữ liệu nạp vào chứa rác văn bản, lỗi OCR hoặc thông tin thiếu nhất quán, thì dù sử dụng mô hình LLM mạnh nhất thế giới cũng không thể cho ra câu trả lời chính xác. Dưới đây là quy trình xử lý chi tiết theo mô hình <strong>Thực trạng ➡️ Cách xử lý ➡️ Kết quả</strong> cho 2 vấn đề lớn được chuyển giao từ Tuần 1:
+    </p>
+
+    <h3>2.1. Vấn đề tồn đọng 1: Dữ liệu crawl website còn thô, nhiễu và thiếu nhất quán</h3>
+
+    <div class="callout">
+      <div class="callout-title">🔴 THỰC TRẠNG TỒN ĐỌNG TỪ TUẦN 1</div>
+      Kiểm toán dữ liệu từ file gốc <a href="data/raw/crawl_v2.json" class="file-link" target="_blank">data/raw/crawl_v2.json</a> và <a href="data/raw/crawl_v2.csv" class="file-link" target="_blank">data/raw/crawl_v2.csv</a> cho thấy:
+      <ul style="margin-left: 20px; margin-top: 6px;">
+        <li><strong>Không nhất quán tên đơn vị ban hành (<code>department</code>)</strong>: Có 37 trường hợp bị viết hoa toàn bộ (như <code>KHOA CÔNG NGHỆ THÔNG TIN</code>, <code>KHOA KINH TẾ QUẢN LÝ</code>), sai chính tả (<code>Viên nghiên cứu nhận thức và giáo dục...</code>), hoặc thừa khoảng trắng kép (<code>Trung tâm Khảo thí và  Đảm bảo chất lượng</code>).</li>
+        <li><strong>Trùng lặp tiêu đề</strong>: Trình crawler trước đó đã bóc tách trùng lặp tiêu đề bài viết vào đầu trường <code>content</code> (ví dụ: <code>Cơ cấu tổ chức\nCơ cấu tổ chức|Trường Đại học Thăng Long...</code>).</li>
+        <li><strong>Vỡ cấu trúc mảng trên CSV</strong>: Các trường mảng <code>links</code> và <code>tags</code> bị chuyển thành chuỗi văn bản phẳng làm sai lệch trình đọc dữ liệu.</li>
+      </ul>
+    </div>
+
+    <div class="callout" style="background: #f0fdf4; border-left-color: #10b981;">
+      <div class="callout-title" style="color: #065f46;">🟡 CÁCH XỬ LÝ TRONG TUẦN 2</div>
+      Nhóm đã lập trình script tự động hóa <a href="src/cleaning/clean_crawl_data.py" class="file-link" target="_blank">src/cleaning/clean_crawl_data.py</a> với các giải pháp kỹ thuật:
+      <ul style="margin-left: 20px; margin-top: 6px;">
+        <li>Xây dựng bảng từ điển chuẩn hóa danh xưng (<code>DEPT_STANDARDIZATION</code>) đồng bộ 100% về chuẩn Title Case theo đúng quy định của Đại học Thăng Long.</li>
+        <li>Sử dụng biểu thức chính quy (Regex) tự động nhận diện và cắt bỏ đoạn tiêu đề lặp dư thừa ở đầu nội dung và các thẻ breadcrumb rác ở cuối.</li>
+        <li>Chuẩn hóa khoảng trắng kép thành khoảng trắng đơn, loại bỏ khoảng trắng cuối dòng và rút gọn các dòng trống liên tiếp.</li>
+      </ul>
+    </div>
+
+    <div class="callout" style="background: #faf5ff; border-left-color: #8b5cf6;">
+      <div class="callout-title" style="color: #6b21a8;">🟢 KẾT QUẢ ĐẠT ĐƯỢC</div>
+      <ul style="margin-left: 20px;">
+        <li>Xuất bản độc lập bộ dữ liệu sạch: <a href="data/processed/crawl_v2_cleaned.json" class="file-link" target="_blank">data/processed/crawl_v2_cleaned.json</a> và <a href="data/processed/crawl_v2_cleaned.csv" class="file-link" target="_blank">data/processed/crawl_v2_cleaned.csv</a>.</li>
+        <li>Toàn bộ 141 tài liệu sạch tuyệt đối, đồng bộ 37 phòng ban/khoa, giữ nguyên cấu trúc phân cấp mảng đối tượng của JSON.</li>
+      </ul>
+    </div>
+
+    <h4>Minh Họa So Sánh Thực Tế Trước & Sau Khi Làm Sạch (Bản ghi <code>page-co-cau-to-chuc</code>):</h4>
+    <div class="diff-box">
+      <span class="diff-del">- [TRƯỚC]: "Cơ cấu tổ chức\nCơ cấu tổ chức|Trường Đại học Thăng Long\nTrường Đại học Thăng Long tự hào có  đội ngũ cán bộ giảng viên là các Giáo sư, Phó Giáo sư, Tiến sĩ..."</span>
+      <span class="diff-add">+ [SAU]  : "Trường Đại học Thăng Long tự hào có đội ngũ cán bộ giảng viên là các Giáo sư, Phó Giáo sư, Tiến sĩ, Thạc sĩ và những nhà giáo ưu tú..."</span>
+    </div>
+
+    <h3>2.2. Vấn đề tồn đọng 2: 529 lỗi OCR từ tài liệu đào tạo PDF bị "treo" (99.2% chưa xử lý)</h3>
+
+    <div class="callout">
+      <div class="callout-title">🔴 THỰC TRẠNG TỒN ĐỌNG TỪ TUẦN 1</div>
+      Từ bảng theo dõi lỗi <a href="data/raw/loi_crawl.xlsx" class="file-link" target="_blank">data/raw/loi_crawl.xlsx</a> thu thập từ 51 file PDF CTĐT K39:
+      <ul style="margin-left: 20px; margin-top: 6px;">
+        <li><strong>Tình trạng báo động</strong>: Tuần 1 mới chỉ điền tay đúng 4 dòng đầu tiên (STT 3–6, chiếm 0.8%), còn lại <strong>525 dòng bị bỏ trống (chiếm 99.2%)</strong>.</li>
+        <li><strong>Nguy cơ tê liệt tìm kiếm</strong>: Có 92 mã học phần bị sai (ví dụ <code>ECMI151</code>, <code>NWSI403</code>, <code>PHEII0I</code>). Khi sinh viên gõ đúng mã môn học, thuật toán BM25 sẽ không thể tìm thấy tài liệu.</li>
+        <li><strong>Nguy cơ méo Vector Embedding</strong>: Có 39 dòng rác bảng (như <code>P | | ! ! | \ |</code>) làm biến dạng vector đặc trưng của đoạn văn bản.</li>
+      </ul>
+    </div>
+
+    <div class="callout" style="background: #f0fdf4; border-left-color: #10b981;">
+      <div class="callout-title" style="color: #065f46;">🟡 CÁCH XỬ LÝ TRONG TUẦN 2</div>
+      Nhóm đã lập trình script tự động hóa <a href="src/cleaning/fill_loi_crawl.py" class="file-link" target="_blank">src/cleaning/fill_loi_crawl.py</a> áp dụng các thuật toán:
+      <ul style="margin-left: 20px; margin-top: 6px;">
+        <li><strong>Quy tắc mã học phần TLU (3 chữ cái + 4 số)</strong>: Thay thế tự động các ký tự nhầm lẫn: chữ <code>I</code>/<code>l</code> ➡️ số <code>1</code>, chữ <code>O</code>/<code>o</code> ➡️ số <code>0</code>, phục hồi mã ngành quốc tế (<code>IMCO</code> ➡️ <code>JMCO</code>).</li>
+        <li><strong>Nhận diện rác đường kẻ bảng</strong>: Tự động phân tích tỷ lệ ký tự kẻ khung và điền nhãn <code>[XÓA]</code>.</li>
+        <li><strong>Phục hồi cụm từ tiếng Việt</strong>: Xây dựng từ điển bóc tách các từ dính dựa trên danh mục môn học của Đại học Thăng Long.</li>
+      </ul>
+    </div>
+
+    <div class="callout" style="background: #faf5ff; border-left-color: #8b5cf6;">
+      <div class="callout-title" style="color: #6b21a8;">🟢 KẾT QUẢ ĐẠT ĐƯỢC</div>
+      Đã giải quyết <strong>100% (529/529 dòng lỗi)</strong>, không còn bất kỳ ô trống nào. Kết quả được lưu trực tiếp vào <a href="data/raw/loi_crawl.xlsx" class="file-link" target="_blank">data/raw/loi_crawl.xlsx</a> và tạo bản sao lưu an toàn <a href="data/processed/loi_crawl_hoan_thien.xlsx" class="file-link" target="_blank">data/processed/loi_crawl_hoan_thien.xlsx</a>. Bảng 2 thống kê kết quả khắc phục theo từng nhóm lỗi:
+    </div>
+
+    <div class="table-wrapper">
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th>Nhóm lỗi OCR</th>
+            <th>Số lượng</th>
+            <th>Tỷ lệ</th>
+            <th>Mẫu lỗi OCR thực tế</th>
+            <th>Phương án khắc phục đã điền & Ghi chú</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Nhiễu bảng (dòng ký tự rời)</strong></td>
+            <td>39 lỗi</td>
+            <td>7.4%</td>
+            <td><code>P | | ! ! | | | \ |</code>, <code>` = A A A | A</code></td>
+            <td><span class="status-badge badge-pending">[XÓA]</span> — Xóa sạch rác đường kẻ ô bảng tính</td>
+          </tr>
+          <tr>
+            <td><strong>Sai mã học phần</strong></td>
+            <td>92 lỗi</td>
+            <td>17.4%</td>
+            <td><code>ECMI151</code>, <code>NWSI403</code>, <code>PHEII0I</code></td>
+            <td><span class="status-badge badge-done">ECM1151</span>, <span class="status-badge badge-done">NWS1403</span>, <span class="status-badge badge-done">PHE1101</span> (Chuẩn 3 chữ + 4 số)</td>
+          </tr>
+          <tr>
+            <td><strong>Sai chữ (từ dính, sai dấu)</strong></td>
+            <td>395 lỗi</td>
+            <td>74.7%</td>
+            <td><code>Quảntrịhọocđại</code>, <code>đfinance</code>, <code>sơhhmmnmmmmm</code></td>
+            <td><code>Quản trị học đại cương</code>, <code>finance</code>, <span class="status-badge badge-pending">[XÓA]</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sai số (lẫn chữ cái)</strong></td>
+            <td>2 lỗi</td>
+            <td>0.4%</td>
+            <td><code>I2</code>, <code>I12</code></td>
+            <td><span class="status-badge badge-done">12</span>, <span class="status-badge badge-done">112</span> (Sửa chữ I thành số 1)</td>
+          </tr>
+          <tr>
+            <td><strong>Sai ngày tháng</strong></td>
+            <td>1 lỗi</td>
+            <td>0.2%</td>
+            <td><code>05/0/2027</code></td>
+            <td><span class="status-badge badge-done">05/07/2027</span> (Chuẩn hóa dd/mm/yyyy theo hướng dẫn)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-caption">Bảng 2: Thống kê kết quả xử lý 529 lỗi OCR trích xuất từ tài liệu PDF đào tạo</div>
+    </div>
+
+    <!-- PHẦN 3 -->
+    <h2 id="muc-3">PHẦN 3: CHIẾN LƯỢC VÀ TRIỂN KHAI PIPELINE CHUNKING</h2>
+
+    <p>
+      Phân đoạn văn bản (Chunking) là thao tác kỹ thuật bắt buộc trong mọi pipeline RAG tiêu chuẩn. Script triển khai được đóng gói tại <a href="src/chunking/chunking_pipeline.py" class="file-link" target="_blank">src/chunking/chunking_pipeline.py</a>. Dưới đây là phân tích chi tiết cơ sở khoa học và kết quả triển khai:
+    </p>
+
+    <h3>3.1. Cơ sở lý thuyết: Tại sao hệ thống RAG bắt buộc phải Chunking?</h3>
+    <ol style="margin-left: 25px; margin-bottom: 18px;">
+      <li><strong>Giới hạn Context Window của Embedding Model</strong>: Các mô hình nhúng hiện nay (như BGE-M3, Multilingual-E5) hoạt động tốt nhất trong khoảng 256–512 tokens. Việc cố nhồi một bài viết dài hàng nghìn ký tự sẽ khiến văn bản bị cắt cụt (truncation), làm mất thông tin ở phần đuôi.</li>
+      <li><strong>Nguy cơ pha loãng ngữ nghĩa (Semantic Dilution)</strong>: Khi nhồi cả một văn bản dài gồm 10 quy định khác nhau vào 1 vector duy nhất, các ý nghĩa sẽ triệt tiêu lẫn nhau, khiến độ tương đồng Cosine giữa vector câu hỏi và vector tài liệu bị suy giảm nghiêm trọng.</li>
+      <li><strong>Hiện tượng "Lost in the Middle" của LLM</strong>: Các nghiên cứu thực nghiệm chỉ ra rằng mô hình ngôn ngữ lớn thường chỉ tập trung tốt ở phần đầu và phần cuối của prompt, dễ bỏ qua chi tiết quan trọng nằm ở giữa đoạn văn dài.</li>
+    </ol>
+
+    <h3>3.2. Lựa chọn chiến lược: Phân mảnh đệ quy kết hợp cấu trúc môn học (Hybrid Splitting)</h3>
+    <p>
+      Nhóm áp dụng kỹ thuật kết hợp giữa 2 phương pháp:
+    </p>
+    <ul style="margin-left: 25px; margin-bottom: 18px;">
+      <li><strong>Nhóm văn bản thông thường (thông báo, quy chế, chức năng đơn vị)</strong>: Sử dụng thuật toán <em>Recursive Character Text Splitting</em>. Thuật toán phân đoạn đệ quy theo các ranh giới tự nhiên: Đoạn văn (<code>\n\n</code>) ➡️ Dòng đơn (<code>\n</code>) ➡️ Dấu chấm câu (<code>. </code>) ➡️ Khoảng trắng từ (<code> </code>). Cách làm này đảm bảo câu văn không bao giờ bị cắt cụt giữa chừng.</li>
+      <li><strong>Nhóm 25 ngành đào tạo đại học</strong>: Bóc tách trường dữ liệu <code>curriculum</code> dạng JSON để tạo các chunk chuyên biệt theo từng <strong>Năm học</strong> và <strong>Khối kiến thức</strong> (Môn học cơ sở, Môn chuyên ngành, Môn tự chọn). Nhờ vậy, khi sinh viên hỏi về các môn học năm 1 ngành CNTT, hệ thống sẽ trả về chính xác khối môn tương ứng.</li>
+    </ul>
+
+    <h3>3.3. Thiết lập tham số và thống kê phân bố 496 Chunks</h3>
+    <p>
+      Các tham số kỹ thuật cốt lõi được cấu hình:
+    </p>
+    <ul style="margin-left: 25px; margin-bottom: 18px;">
+      <li><strong>Kích thước Chunk đích (Target Chunk Size)</strong>: <code>650 – 700 ký tự</code> (~130 – 150 từ). Vừa vặn để chứa trọn vẹn một điều khoản quy chế hoặc một khối danh sách môn học.</li>
+      <li><strong>Độ gối đầu (Chunk Overlap)</strong>: <code>120 ký tự</code> (~18% kích thước chunk). Giữ nguyên vẹn tính liên tục của ngữ cảnh; câu kết của chunk trước sẽ lặp lại ở đầu chunk sau.</li>
+    </ul>
+
+    <div class="table-wrapper">
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th>Chỉ số thống kê</th>
+            <th>Giá trị định lượng</th>
+            <th>Ý nghĩa trong vận hành mô hình RAG</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Tổng số Chunk tạo thành</strong></td>
+            <td><strong>496 Chunks</strong></td>
+            <td>Sinh từ 141 tài liệu sạch ban đầu, lưu trữ tại <a href="data/chunks/clean_chunks.json" class="file-link" target="_blank">data/chunks/clean_chunks.json</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>Độ dài ký tự trung bình (Mean)</strong></td>
+            <td><strong>447.6 ký tự</strong></td>
+            <td>Nằm chính xác trong khoảng tối ưu của các mô hình Embedding tiếng Việt.</td>
+          </tr>
+          <tr>
+            <td><strong>Độ dài trung vị (Median)</strong></td>
+            <td><strong>436.0 ký tự</strong></td>
+            <td>Phân bố rất đồng đều, không bị hiện tượng lệch độ dài.</td>
+          </tr>
+          <tr>
+            <td><strong>Chunk ngắn nhất / dài nhất</strong></td>
+            <td>58 ký tự / 819 ký tự</td>
+            <td>Các chunk ngắn nhất là các thông báo cô đọng, dài nhất là các điều khoản quy định.</td>
+          </tr>
+          <tr>
+            <td><strong>Phân bố CTĐT & Môn học</strong></td>
+            <td><strong>388 Chunks (78.2%)</strong></td>
+            <td>Bao phủ toàn bộ khối kiến thức 25 chuyên ngành đào tạo.</td>
+          </tr>
+          <tr>
+            <td><strong>Phân bố Quy chế, Lịch thi, Học phí</strong></td>
+            <td><strong>108 Chunks (21.8%)</strong></td>
+            <td>Chứa đầy đủ các quy định học phí, lịch thi và chức năng phòng ban.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-caption">Bảng 3: Thông số phân bố định lượng của 496 Chunks trong tập ngữ liệu sạch</div>
+    </div>
+
+    <!-- PHẦN 4 -->
+    <h2 id="muc-4">PHẦN 4: THIẾT KẾ VÀ ĐÓNG GÓI SIÊU DỮ LIỆU (METADATA)</h2>
+
+    <p>
+      Siêu dữ liệu (Metadata) đóng vai trò là "chiếc la bàn" định hướng cho hệ thống RAG. Mỗi chunk văn bản trong <a href="data/chunks/clean_chunks.json" class="file-link" target="_blank">data/chunks/clean_chunks.json</a> đều được đính kèm 12 trường siêu dữ liệu có cấu trúc:
+    </p>
+
+    <h3>4.1. Tác dụng của Metadata trong vận hành RAG</h3>
+    <ul style="margin-left: 25px; margin-bottom: 18px;">
+      <li><strong>Lọc trước truy vấn (Metadata Pre-filtering)</strong>: Khi sinh viên hỏi: <em>"Lịch thi đợt 2 khi nào có?"</em>, hệ thống có thể kết hợp bộ lọc <code>category == 'lich_thi'</code> trước khi tính toán khoảng cách vector. Điều này loại bỏ 95% tài liệu gây nhiễu và đẩy tốc độ tìm kiếm nhanh gấp 10 lần.</li>
+      <li><strong>Minh bạch hóa câu trả lời (Source Attribution & Grounding)</strong>: Metadata lưu giữ trường <code>source_url</code> và <code>date</code>, giúp Chatbot tự động hiển thị link trích dẫn: <em>"Thông tin được trích xuất từ Quyết định số 2234 của Phòng Đào tạo ngày 26/06/2026"</em>.</li>
+      <li><strong>Kiểm soát thời gian hiệu lực (Temporal Relevance)</strong>: Giúp hệ thống luôn ưu tiên thông báo mới nhất (năm học 2026–2027) thay vì các thông báo cũ đã hết hạn.</li>
+    </ul>
+
+    <h3>4.2. Thiết kế Schema Metadata (12 trường dữ liệu)</h3>
+    <div class="table-wrapper">
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Mục đích sử dụng trong hệ thống RAG</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>chunk_id</code></td>
+            <td>String</td>
+            <td>Khóa chính duy nhất định danh chunk (ví dụ: <code>nganh-cong-nghe-thong-tin_c002</code>).</td>
+          </tr>
+          <tr>
+            <td><code>doc_id</code></td>
+            <td>String</td>
+            <td>Mã văn bản gốc, dùng để gom nhóm lại toàn bộ bài viết cha khi cần.</td>
+          </tr>
+          <tr>
+            <td><code>chunk_index</code> / <code>total_chunks</code></td>
+            <td>Integer</td>
+            <td>Vị trí thứ tự của chunk trong bài viết gốc (ví dụ: 2/5).</td>
+          </tr>
+          <tr>
+            <td><code>section</code></td>
+            <td>String</td>
+            <td>Phân mục chi tiết (ví dụ: <em>Năm 1 - Môn học cơ sở</em>).</td>
+          </tr>
+          <tr>
+            <td><code>title</code></td>
+            <td>String</td>
+            <td>Tiêu đề bài viết / Quyết định đào tạo.</td>
+          </tr>
+          <tr>
+            <td><code>category</code></td>
+            <td>Enum/String</td>
+            <td>Danh mục học vụ phục vụ lọc trước (<code>chuong_trinh_dao_tao</code>, <code>hoc_phi</code>, <code>lich_thi</code>).</td>
+          </tr>
+          <tr>
+            <td><code>department</code></td>
+            <td>String</td>
+            <td>Đơn vị ban hành (Khoa Công nghệ thông tin, Phòng Đào tạo,...).</td>
+          </tr>
+          <tr>
+            <td><code>date</code></td>
+            <td>String (YYYY-MM-DD)</td>
+            <td>Ngày ban hành văn bản.</td>
+          </tr>
+          <tr>
+            <td><code>source_url</code></td>
+            <td>URL String</td>
+            <td>Liên kết nguồn chính thức trên website trường để trích dẫn.</td>
+          </tr>
+          <tr>
+            <td><code>char_length</code> / <code>word_count</code></td>
+            <td>Integer</td>
+            <td>Độ dài ký tự và số từ để kiểm soát chi phí token.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-caption">Bảng 4: Đặc tả Schema 12 trường Siêu dữ liệu gắn kèm mỗi Chunk</div>
+    </div>
+
+    <h4>Minh Họa Một Bản Ghi Chunk Ngành Công Nghệ Thông Tin Hoàn Chỉnh:</h4>
+    <pre>{
+  "chunk_id": "nganh-cong-nghe-thong-tin_c002",
+  "doc_id": "nganh-cong-nghe-thong-tin",
+  "chunk_index": 2,
+  "total_chunks_in_doc": 5,
+  "section": "Năm 1 - Môn học cơ sở",
+  "title": "Ngành Công nghệ thông tin",
+  "category": "chuong_trinh_dao_tao",
+  "content_type": "major",
+  "department": "Khoa Công nghệ thông tin",
+  "date": "2026-06-26",
+  "source_url": "https://thanglong.edu.vn/nganh-hoc/cong-nghe-thong-tin",
+  "char_length": 482,
+  "word_count": 94,
+  "text": "Chương trình đào tạo ngành: Ngành Công nghệ thông tin\nGiai đoạn: Năm 1\nNhóm môn: Môn học cơ sở\nDanh sách môn học (9 môn): Giải tích, Đại số tuyến tính, Xác suất thống kê, Lập trình cơ bản, Lập trình hướng đối tượng, Toán rời rạc, Cấu trúc dữ liệu và giải thuật, Cơ sở dữ liệu, Tiếng Anh chuyên ngành."
+}</pre>
+
+    <!-- PHẦN 5 -->
+    <h2 id="muc-5">PHẦN 5: NGHIÊN CỨU MỞ RỘNG VỀ CÁC PHƯƠNG PHÁP THAY THẾ</h2>
+
+    <p>
+      Để phục vụ câu hỏi phản biện chuyên môn từ Hội đồng/Mentor, nhóm đã tiến hành khảo sát và đánh giá so sánh các hướng tiếp cận kỹ thuật thay thế:
+    </p>
+
+    <h3>5.1. So sánh 5 kỹ thuật Chunking tiên tiến</h3>
+    <div class="table-wrapper">
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th>Kỹ thuật Chunking</th>
+            <th>Cơ chế hoạt động</th>
+            <th>Ưu điểm nổi bật</th>
+            <th>Hạn chế / Thách thức</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Recursive Splitting (Đang dùng)</strong></td>
+            <td>Cắt theo thứ tự phân cấp đoạn ➡️ câu ➡️ từ kèm overlap.</td>
+            <td>Tốc độ xử lý cực nhanh, bảo toàn ngữ pháp tự nhiên, ổn định cao.</td>
+            <td>Chưa tự động nhận diện được sự thay đổi chủ đề trừu tượng.</td>
+          </tr>
+          <tr>
+            <td><strong>Semantic Chunking</strong></td>
+            <td>Tính biến thiên khoảng cách Cosine giữa 2 câu liên tiếp.</td>
+            <td>Các chunk có tính trọn vẹn chủ đề ngữ nghĩa rất cao.</td>
+            <td>Tốn chi phí embedding ban đầu; dễ cắt vỡ cấu trúc bảng biểu môn học.</td>
+          </tr>
+          <tr>
+            <td><strong>Parent-Child Chunking</strong></td>
+            <td>Index chunk nhỏ (100 tokens) để tìm kiếm, trả về chunk to (800 tokens) cho LLM.</td>
+            <td>Truy xuất siêu chính xác nhưng vẫn cung cấp đầy đủ ngữ cảnh rộng cho LLM.</td>
+            <td>Cấu trúc Vector DB phức tạp hơn; dung lượng lưu trữ index tăng gấp đôi.</td>
+          </tr>
+          <tr>
+            <td><strong>Late Chunking (Jina AI - 2024)</strong></td>
+            <td>Nạp toàn bộ tài liệu qua Transformer trước, sau đó mới gom vector chunk.</td>
+            <td>Bảo toàn liên kết ngữ cảnh toàn cục (Global Context).</td>
+            <td>Đòi hỏi mô hình Embedding hỗ trợ context cực dài.</td>
+          </tr>
+          <tr>
+            <td><strong>Proposition Chunking</strong></td>
+            <td>Dùng LLM tách văn bản thành các mệnh đề nguyên tử (Atomic Facts).</td>
+            <td>Mỗi chunk là 1 sự thật độc lập, độ chính xác tìm kiếm cao nhất.</td>
+            <td>Chi phí gọi API LLM rất đắt đỏ khi xử lý kho tài liệu lớn.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-caption">Bảng 5: Đánh giá so sánh 5 phương pháp Chunking trong hệ thống RAG</div>
+    </div>
+
+    <h3>5.2. Đánh giá phản biện: Tại sao không dùng LLM triệu tokens thay thế RAG?</h3>
+    <p>
+      Hiện nay các mô hình như Gemini 1.5 Pro hỗ trợ context 1–2 triệu tokens, về lý thuyết có thể nhồi toàn bộ quy chế và website trường vào một prompt duy nhất. Tuy nhiên, trong thực tế triển khai ứng dụng cho sinh viên, phương án này không khả thi vì:
+    </p>
+    <ul style="margin-left: 25px; margin-bottom: 18px;">
+      <li><strong>Chi phí quá đắt đỏ</strong>: Mỗi câu hỏi ngắn của sinh viên lại phải gửi đi hàng triệu tokens qua API, chi phí vận hành sẽ rất lớn.</li>
+      <li><strong>Độ trễ quá cao (Latency)</strong>: Xử lý ngữ cảnh 1 triệu tokens mất từ 30 đến 60 giây, không thể đáp ứng yêu cầu chatbot phản hồi tức thì (1–2 giây).</li>
+      <li><strong>Nguy cơ bỏ sót thông tin (Hiện tượng Needle In A Haystack)</strong>: Mô hình vẫn có xác suất bỏ qua các chi tiết quy định nhỏ (như số phòng học, giờ thi) nằm lọt thỏm giữa hàng nghìn trang văn bản.</li>
+    </ul>
+
+    <!-- PHẦN 6 -->
+    <h2 id="muc-6">PHẦN 6: KẾT LUẬN VÀ KẾ HOẠCH TRIỂN KHAI TUẦN 3</h2>
+
+    <h3>6.1. Đánh giá mức độ hoàn thành nhiệm vụ Tuần 2</h3>
+    <p>
+      Nhóm đã hoàn thành <strong>100% mục tiêu đề ra cho Tuần 2</strong>:
+    </p>
+    <ul style="margin-left: 25px; margin-bottom: 18px;">
+      <li>✅ Giải quyết dứt điểm 100% các vấn đề tồn đọng từ Tuần 1 (làm sạch 141 bài crawl web và sửa 529 lỗi OCR từ 51 file PDF CTĐT).</li>
+      <li>✅ Thiết kế và chạy thực nghiệm thành công pipeline Chunking đệ quy kết hợp cấu trúc môn học.</li>
+      <li>✅ Đóng gói hoàn tất tập ngữ liệu sạch gồm <strong>496 Chunks</strong> kèm đầy đủ 12 trường siêu dữ liệu chuẩn hóa.</li>
+    </ul>
+
+    <h3>6.2. Kế hoạch triển khai trọng tâm Tuần 3</h3>
+    <ol style="margin-left: 25px; margin-bottom: 18px;">
+      <li><strong>Thực nghiệm mô hình Embedding tiếng Việt</strong>: Tiến hành benchmark so sánh giữa: <code>BAAI/bge-m3</code>, <code>intfloat/multilingual-e5-large</code>, và <code>bkai-foundation-models/vietnamese-bi-encoder</code> về tốc độ vector hóa và chất lượng tương đồng Cosine.</li>
+      <li><strong>Khởi tạo và cấu hình Vector Database</strong>: Cài đặt và cấu hình <code>ChromaDB</code> / <code>FAISS</code> cục bộ, nạp toàn bộ 496 chunks cùng siêu dữ liệu.</li>
+      <li><strong>Đánh giá thử nghiệm truy xuất (Retrieval Testing)</strong>: Xây dựng tập 10 câu hỏi trắc nghiệm học vụ thực tế đo lường Top-k Recall và MRR (Mean Reciprocal Rank).</li>
+    </ol>
+
+    <!-- PHẦN 7 -->
+    <h2 id="muc-7">PHẦN 7: KIẾN TRÚC MÔ-ĐUN HÓA, CÂY THƯ MỤC DỰ ÁN VÀ TẬP TIN BÀN GIAO</h2>
+
+    <p>
+      Nhằm đáp ứng yêu cầu kỹ thuật chuyên nghiệp của đề tài nghiên cứu <strong>"Ứng dụng RAG hỗ trợ sinh viên tra cứu thông tin học vụ"</strong> (căn cứ theo đặc tả tại tài liệu <code>YeuCauThucTap.pdf</code>), toàn bộ dữ liệu, mã nguồn và báo cáo trong Tuần 2 đã được tái cấu trúc và mô-đun hóa bài bản. Cấu trúc mới tuân thủ nghiêm ngặt nguyên lý <em>Separation of Concerns (Phân tách mối quan tâm)</em> và mô hình phát triển phần mềm chuẩn mực (Clean Architecture).
+    </p>
+
+    <h3>7.1. Cây thư mục dự án hiện tại (Project Directory Tree)</h3>
+    <p>
+      Cây thư mục dưới đây phản ánh chính xác cấu trúc lưu trữ phân tầng hiện tại của dự án trong Tuần 2, bao gồm 3 tầng dữ liệu độc lập, các module mã nguồn theo từng giai đoạn xử lý của pipeline RAG và hệ thống tài liệu báo cáo:
+    </p>
+
+    <div class="tree-container">
+<span class="tree-folder">d:/Intern/Bao_cao_tuan_2/</span>
+│
+├── <span class="tree-folder">data/</span>                                 <span class="tree-comment"># QUẢN LÝ DỮ LIỆU ĐA TẦNG (DATA PIPELINE)</span>
+│   ├── <span class="tree-folder">raw/</span>                              <span class="tree-comment"># Tầng 1: Dữ liệu thô ban đầu (kế thừa từ Tuần 1)</span>
+│   │   ├── <span class="tree-file">crawl_v2.json</span>                 <span class="tree-comment"># 141 bài crawl thô từ website Đại học Thăng Long</span> <span class="tree-tag tree-tag-data">RAW</span>
+│   │   ├── <span class="tree-file">crawl_v2.csv</span>                  <span class="tree-comment"># Bảng dữ liệu crawl thô (141 dòng x 8 thuộc tính)</span> <span class="tree-tag tree-tag-data">RAW</span>
+│   │   └── <span class="tree-file">loi_crawl.xlsx</span>                <span class="tree-comment"># File theo dõi 529 lỗi OCR từ 51 file CTĐT K39</span> <span class="tree-tag tree-tag-data">RAW</span>
+│   │
+│   ├── <span class="tree-folder">processed/</span>                        <span class="tree-comment"># Tầng 2: Dữ liệu đã làm sạch & tiền xử lý chuẩn hóa</span>
+│   │   ├── <span class="tree-file">crawl_v2_cleaned.json</span>         <span class="tree-comment"># 141 bài đã chuẩn hóa danh xưng phòng ban, lọc trùng tiêu đề</span> <span class="tree-tag tree-tag-data">CLEANED</span>
+│   │   ├── <span class="tree-file">crawl_v2_cleaned.csv</span>          <span class="tree-comment"># Bảng dữ liệu web đã làm sạch</span> <span class="tree-tag tree-tag-data">CLEANED</span>
+│   │   └── <span class="tree-file">loi_crawl_hoan_thien.xlsx</span>     <span class="tree-comment"># File Excel đã khắc phục 100% (529/529) lỗi OCR đào tạo</span> <span class="tree-tag tree-tag-data">CLEANED</span>
+│   │
+│   └── <span class="tree-folder">chunks/</span>                           <span class="tree-comment"># Tầng 3: Ngữ liệu phân đoạn (Clean Corpus) sẵn sàng cho Vector DB</span>
+│       ├── <span class="tree-file">clean_chunks.json</span>             <span class="tree-comment"># 496 Chunks hoàn chỉnh kèm 12 trường siêu dữ liệu chuẩn</span> <span class="tree-tag tree-tag-data">CORPUS</span>
+│       └── <span class="tree-file">clean_chunks.csv</span>              <span class="tree-comment"># Bảng tra cứu và kiểm toán chất lượng 496 chunks</span> <span class="tree-tag tree-tag-data">CORPUS</span>
+│
+├── <span class="tree-folder">src/</span>                                  <span class="tree-comment"># MÃ NGUỒN PIPELINE THEO MÔ-ĐUN (MODULAR ARCHITECTURE)</span>
+│   ├── <span class="tree-folder">cleaning/</span>                         <span class="tree-comment"># Phân hệ 1: Tiền xử lý & làm sạch ngữ liệu</span>
+│   │   ├── <span class="tree-file">clean_crawl_data.py</span>           <span class="tree-comment"># Làm sạch dữ liệu website, chuẩn hóa danh xưng 37 đơn vị</span> <span class="tree-tag tree-tag-code">CODE</span>
+│   │   └── <span class="tree-file">fill_loi_crawl.py</span>             <span class="tree-comment"># Tự động sửa 529 lỗi OCR theo chuẩn học vụ TLU & từ điển</span> <span class="tree-tag tree-tag-code">CODE</span>
+│   │
+│   ├── <span class="tree-folder">chunking/</span>                         <span class="tree-comment"># Phân hệ 2: Phân mảnh ngữ nghĩa & Đóng gói Metadata (Trọng tâm Tuần 2)</span>
+│   │   └── <span class="tree-file">chunking_pipeline.py</span>          <span class="tree-comment"># Thuật toán Hybrid Splitting & gán 12 trường metadata</span> <span class="tree-tag tree-tag-code">CODE</span>
+│   │
+│   └── <span class="tree-folder">evaluation/</span>                       <span class="tree-comment"># Phân hệ 3: Kiểm toán chất lượng & phân tích thống kê</span>
+│       └── <span class="tree-file">audit_and_analyze.py</span>          <span class="tree-comment"># Phân tích phân bố độ dài, độ bao phủ và tính toàn vẹn 3 tầng dữ liệu</span> <span class="tree-tag tree-tag-code">CODE</span>
+│
+├── <span class="tree-folder">reports/</span>                              <span class="tree-comment"># BÁO CÁO TIẾN ĐỘ & TÀI LIỆU HỌC THUẬT</span>
+│   ├── <span class="tree-file">Bao_Cao_Tuan_2_v2.html</span>            <span class="tree-comment"># Báo cáo tiến độ Tuần 2 (Phiên bản Academic / Chuẩn in ấn Word)</span> <span class="tree-tag tree-tag-doc">DOC</span>
+│   ├── <span class="tree-file">Bao_Cao_Tuan_2.html</span>               <span class="tree-comment"># Báo cáo tiến độ Tuần 2 (Phiên bản Dashboard tương tác trực quan)</span> <span class="tree-tag tree-tag-doc">DOC</span>
+│   └── <span class="tree-file">Bao_Cao_Thuc_Tap_Tuan_2.md</span>        <span class="tree-comment"># Tài liệu kỹ thuật chi tiết định dạng Markdown</span> <span class="tree-tag tree-tag-doc">DOC</span>
+│
+├── <span class="tree-file">Bao_Cao_Tuan_2_v2.html</span>                <span class="tree-comment"># Trang báo cáo chính mở trực tiếp từ thư mục gốc dự án</span> <span class="tree-tag tree-tag-doc">PRIMARY</span>
+└── <span class="tree-file">README.md</span>                             <span class="tree-comment"># Tài liệu hướng dẫn cài đặt, kiến trúc pipeline và lệnh thực thi</span> <span class="tree-tag tree-tag-doc">README</span>
+    </div>
+
+    <h3>7.2. Cơ sở thiết kế và sự phù hợp kiến trúc với Đề tài 3 (RAG Học vụ)</h3>
+    <p>
+      Cây thư mục trên được thiết kế bám sát tuyệt đối theo mục tiêu và lộ trình 10 tuần quy định tại tài liệu đặc tả <code>YeuCauThucTap.pdf</code>:
+    </p>
+    <ul style="margin-left: 25px; margin-bottom: 18px;">
+      <li>
+        <strong>Tổ chức Data Pipeline 3 tầng chặt chẽ (Data-Centric AI)</strong>:
+        Khâu chuẩn bị dữ liệu trong RAG quyết định trực tiếp tới 80% chất lượng phản hồi của Chatbot. Việc phân chia rõ ranh giới giữa <code>data/raw/</code> (dữ liệu bất biến thu thập ban đầu), <code>data/processed/</code> (dữ liệu đã làm sạch và sửa lỗi OCR), và <code>data/chunks/</code> (kho ngữ liệu đã phân đoạn và gắn metadata) giúp ngăn ngừa việc ghi đè mất mát dữ liệu gốc, đồng thời tạo ra một quy trình kiểm toán (Audit Trail) minh bạch và có thể tái lập (Reproducible).
+      </li>
+      <li>
+        <strong>Mô-đun hóa mã nguồn theo chu trình Indexing</strong>:
+        Thay vì để các script chạy độc lập tại thư mục gốc, hệ thống chia thành 3 phân hệ độc lập trong <code>src/</code>:
+        <em>cleaning</em> (làm sạch), <em>chunking</em> (phân đoạn và siêu dữ liệu), và <em>evaluation</em> (kiểm toán chất lượng). Mỗi module chỉ đảm nhận đúng một trách nhiệm duy nhất (Single Responsibility Principle).
+      </li>
+      <li>
+        <strong>Tính sẵn sàng mở rộng cho các giai đoạn tiếp theo (Extensibility Roadmap)</strong>:
+        Cấu trúc này tạo tiền đề vững chắc để nhóm nghiên cứu dễ dàng bổ sung các module tiếp theo mà không làm xáo trộn hệ thống hiện tại:
+        <ul style="margin-left: 20px; margin-top: 6px;">
+          <li>Tuần 3: Bổ sung <code>src/indexing/</code> (Mô hình Embedding BGE-M3/E5 và Vector Database Chroma/FAISS).</li>
+          <li>Tuần 4: Bổ sung <code>src/retrieval/</code> (Retriever kết hợp Hybrid Search BM25 + Vector và Reranker).</li>
+          <li>Tuần 5: Bổ sung <code>src/generation/</code> (Prompt Template, LLM Adapter và Guardrail chống hallucination).</li>
+          <li>Tuần 7: Bổ sung <code>src/ui/</code> (Giao diện Chatbot Streamlit/Next.js có trích dẫn nguồn).</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>7.3. Bảng danh mục tập tin và liên kết mã nguồn bàn giao</h3>
+    <p>
+      Người đọc có thể bấm trực tiếp vào các liên kết dưới đây để truy cập và kiểm tra từng tập tin theo cấu trúc thư mục mới:
+    </p>
+
+    <div class="table-wrapper">
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th style="width: 28%;">Tên tập tin bàn giao</th>
+            <th style="width: 14%;">Phân hệ</th>
+            <th style="width: 10%;">Định dạng</th>
+            <th style="width: 48%;">Mô tả nội dung & Chức năng trong hệ thống</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="data/chunks/clean_chunks.json" class="file-link" target="_blank">data/chunks/clean_chunks.json</a></td>
+            <td>Data / Chunks</td>
+            <td>JSON</td>
+            <td>Tập ngữ liệu sạch gồm <strong>496 Chunks</strong> kèm đầy đủ 12 trường siêu dữ liệu chuẩn hóa (Đầu vào Tuần 3).</td>
+          </tr>
+          <tr>
+            <td><a href="data/chunks/clean_chunks.csv" class="file-link" target="_blank">data/chunks/clean_chunks.csv</a></td>
+            <td>Data / Chunks</td>
+            <td>CSV</td>
+            <td>Bảng tra cứu 496 chunks dạng phẳng phục vụ kiểm toán nhanh trên Excel.</td>
+          </tr>
+          <tr>
+            <td><a href="data/processed/loi_crawl_hoan_thien.xlsx" class="file-link" target="_blank">data/processed/loi_crawl_hoan_thien.xlsx</a></td>
+            <td>Data / Processed</td>
+            <td>Excel</td>
+            <td>Bản lưu trữ hoàn thiện kết quả khắc phục <strong>100% (529/529 dòng lỗi OCR)</strong> từ 51 file PDF CTĐT K39.</td>
+          </tr>
+          <tr>
+            <td><a href="data/processed/crawl_v2_cleaned.json" class="file-link" target="_blank">data/processed/crawl_v2_cleaned.json</a></td>
+            <td>Data / Processed</td>
+            <td>JSON</td>
+            <td>141 bài viết crawl web đã làm sạch, đồng bộ 37 phòng ban/khoa theo chuẩn Title Case.</td>
+          </tr>
+          <tr>
+            <td><a href="data/raw/loi_crawl.xlsx" class="file-link" target="_blank">data/raw/loi_crawl.xlsx</a></td>
+            <td>Data / Raw</td>
+            <td>Excel</td>
+            <td>File theo dõi 529 lỗi OCR gốc được đồng bộ trạng thái xử lý hoàn tất.</td>
+          </tr>
+          <tr>
+            <td><a href="src/chunking/chunking_pipeline.py" class="file-link" target="_blank">src/chunking/chunking_pipeline.py</a></td>
+            <td>Source Code</td>
+            <td>Python</td>
+            <td>Mã nguồn thuật toán Hybrid Splitting và đóng gói schema 12 trường siêu dữ liệu.</td>
+          </tr>
+          <tr>
+            <td><a href="src/cleaning/fill_loi_crawl.py" class="file-link" target="_blank">src/cleaning/fill_loi_crawl.py</a></td>
+            <td>Source Code</td>
+            <td>Python</td>
+            <td>Mã nguồn tự động sửa 529 lỗi OCR dựa trên luật học vụ TLU và từ điển bóc tách từ.</td>
+          </tr>
+          <tr>
+            <td><a href="src/cleaning/clean_crawl_data.py" class="file-link" target="_blank">src/cleaning/clean_crawl_data.py</a></td>
+            <td>Source Code</td>
+            <td>Python</td>
+            <td>Mã nguồn tiền xử lý làm sạch website, loại bỏ lặp tiêu đề và chuẩn hóa tên khoa/phòng.</td>
+          </tr>
+          <tr>
+            <td><a href="src/evaluation/audit_and_analyze.py" class="file-link" target="_blank">src/evaluation/audit_and_analyze.py</a></td>
+            <td>Source Code</td>
+            <td>Python</td>
+            <td>Mã nguồn kiểm toán tính toàn vẹn của 3 tầng dữ liệu và xuất báo cáo thống kê định lượng.</td>
+          </tr>
+          <tr>
+            <td><a href="reports/Bao_Cao_Tuan_2.html" class="file-link" target="_blank">reports/Bao_Cao_Tuan_2.html</a></td>
+            <td>Reports</td>
+            <td>HTML</td>
+            <td>Phiên bản 1: Trang báo cáo Web Dashboard giao diện tương tác cao cấp (Interactive).</td>
+          </tr>
+          <tr>
+            <td><a href="reports/Bao_Cao_Thuc_Tap_Tuan_2.md" class="file-link" target="_blank">reports/Bao_Cao_Thuc_Tap_Tuan_2.md</a></td>
+            <td>Reports</td>
+            <td>Markdown</td>
+            <td>Tài liệu báo cáo tiến độ chi tiết định dạng Markdown chuẩn GitHub Flavored.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-caption">Bảng 6: Danh mục tập tin mã nguồn và ngữ liệu bàn giao hoàn chỉnh trong Tuần 2</div>
+    </div>
+
+    <h3>7.4. Hướng dẫn thực thi nhanh toàn bộ Pipeline (Quickstart)</h3>
+    <p>
+      Để tái hiện toàn bộ kết quả phân đoạn và làm sạch dữ liệu từ đầu đến cuối, người thực thi chỉ cần mở terminal tại thư mục gốc của dự án và chạy lần lượt các lệnh:
+    </p>
+
+    <div class="diff-box" style="background: #1e293b; color: #f8fafc; font-family: 'JetBrains Mono', monospace;">
+      <span style="color: #94a3b8;"># 1. Tiền xử lý làm sạch dữ liệu crawl website</span><br>
+      <span style="color: #60a5fa;">python src/cleaning/clean_crawl_data.py</span><br><br>
+      <span style="color: #94a3b8;"># 2. Tự động khắc phục 529 lỗi OCR từ 51 file PDF CTĐT</span><br>
+      <span style="color: #60a5fa;">python src/cleaning/fill_loi_crawl.py</span><br><br>
+      <span style="color: #94a3b8;"># 3. Phân mảnh văn bản (Hybrid Chunking) và đóng gói 12 trường Metadata</span><br>
+      <span style="color: #60a5fa;">python src/chunking/chunking_pipeline.py</span><br><br>
+      <span style="color: #94a3b8;"># 4. Kiểm toán toàn diện 3 tầng dữ liệu và xác thực chất lượng Clean Corpus</span><br>
+      <span style="color: #60a5fa;">python src/evaluation/audit_and_analyze.py</span>
+    </div>
+
+  </div>
+
+</body>
+</html>

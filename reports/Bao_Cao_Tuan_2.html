@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Tiến Độ Thực Tập Tuần 2 — Hệ Thống RAG Học Vụ TLU</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --primary-dark: #1d4ed8;
+      --accent: #06b6d4;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg: #0b0f19;
+      --bg-card: #111827;
+      --bg-card-hover: #1f2937;
+      --border: #374151;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --code-bg: #1e293b;
+      --radius: 12px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --code-bg: #f1f5f9;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      padding-bottom: 80px;
+    }
+
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Header Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    [data-theme="light"] header {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--primary-light);
+    }
+
+    .theme-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(180deg, rgba(37, 99, 235, 0.1) 0%, transparent 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(37, 99, 235, 0.15);
+      color: var(--primary-light);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      border: 1px solid rgba(37, 99, 235, 0.3);
+    }
+
+    .hero h1 {
+      font-size: 2.35rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .kpi-card.green::before { background: var(--success); }
+    .kpi-card.cyan::before { background: var(--accent); }
+    .kpi-card.yellow::before { background: var(--warning); }
+
+    .kpi-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 8px 0;
+      letter-spacing: -0.03em;
+    }
+
+    .kpi-desc {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* Section Styles */
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title span.number {
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.9rem;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    /* Flow Stage Cards (Thực trạng -> Cách xử lý -> Kết quả) */
+    .flow-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+    @media (max-width: 900px) {
+      .flow-container { grid-template-columns: 1fr; }
+    }
+
+    .flow-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .flow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+
+    .flow-card.bad .flow-badge { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .flow-card.action .flow-badge { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .flow-card.good .flow-badge { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .flow-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .flow-body {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      flex-grow: 1;
+    }
+
+    /* Comparison Table */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    th {
+      background: var(--bg);
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: var(--bg-card-hover);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .badge-info { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+    /* Code Box & Diff */
+    .diff-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      font-size: 0.85rem;
+      margin: 16px 0;
+      overflow-x: auto;
+    }
+    .diff-line {
+      display: block;
+      padding: 3px 6px;
+      border-radius: 4px;
+      margin-bottom: 2px;
+    }
+    .diff-del { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+    .diff-add { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+
+    /* Interactive File Buttons */
+    .file-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .file-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .file-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    /* Charts Container */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 24px 0;
+    }
+    @media (max-width: 850px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+
+    .chart-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .chart-card h4 {
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      margin: 24px 0;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 8px;
+      width: 2px;
+      background: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -28px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid var(--bg-card);
+    }
+    .timeline-dot.done { background: var(--success); }
+    .timeline-content h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+    .timeline-content p { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header>
+    <div class="nav-container">
+      <div class="brand">
+        <span class="brand-badge">RAG LAB</span>
+        <span>TLU Academic RAG Project</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#tong-quan">Tổng quan</a></li>
+        <li><a href="#ton-dong-tuan-1">Tồn đọng Tuần 1</a></li>
+        <li><a href="#chunking">Pipeline Chunking</a></li>
+        <li><a href="#metadata">Metadata</a></li>
+        <li><a href="#nghien-cuu">Mở rộng</a></li>
+        <li><a href="#ke-hoach-tuan-3">Tuần 3</a></li>
+        <li>
+          <button class="theme-btn" onclick="toggleTheme()" id="themeToggleBtn">
+            <span id="themeIcon">☀️</span> Chế độ
+          </button>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Hero Header -->
+    <section class="hero" id="tong-quan">
+      <div class="hero-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        BÁO CÁO THỰC TẬP TỐT NGHIỆP — TUẦN 2
+      </div>
+      <h1>Xây Dựng Hệ Thống RAG Hỗ Trợ Sinh Viên Tra Cứu Thông Tin Học Vụ</h1>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <strong>Đơn vị:</strong> Trường Đại học Thăng Long (TLU)
+        </div>
+        <div class="hero-meta-item">
+          <strong>Học phần:</strong> Thực tập chuyên ngành / Tốt nghiệp
+        </div>
+        <div class="hero-meta-item">
+          <strong>Giai đoạn:</strong> Tuần 2 (Tiền xử lý, Chunking & Metadata)
+        </div>
+        <div class="hero-meta-item">
+          <strong>Trạng thái:</strong> <span class="badge badge-success">Hoàn thành 100% mục tiêu</span>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card green">
+          <div class="kpi-title">Dữ Liệu Web Đã Làm Sạch</div>
+          <div class="kpi-value">141</div>
+          <div class="kpi-desc">Chuẩn hóa 37 danh xưng phòng ban, xóa lặp tiêu đề</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Khắc Phục Lỗi OCR (PDF)</div>
+          <div class="kpi-value">529 / 529</div>
+          <div class="kpi-desc">Đạt 100% (Tuần 1 bàn giao tồn đọng 99.2% chưa sửa)</div>
+        </div>
+
+        <div class="kpi-card cyan">
+          <div class="kpi-title">Tổng Số Chunks RAG</div>
+          <div class="kpi-value">496</div>
+          <div class="kpi-desc">Bao phủ 25 CTĐT chuyên ngành & toàn bộ quy chế</div>
+        </div>
+
+        <div class="kpi-card yellow">
+          <div class="kpi-title">Độ Dài Trung Bình Chunk</div>
+          <div class="kpi-value">447.6</div>
+          <div class="kpi-desc">Ký tự/chunk (Độ gối đầu Overlap 120 ký tự ~ 20%)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: Đối soát tiến độ chuyển giao Tuần 1 -> Tuần 2 -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="number">1</span>
+          Đối Soát Tiến Độ Chuyển Giao Từ Tuần 1 Sang Tuần 2
+        </div>
+      </div>
+      <p style="color: var(--text-muted); margin-bottom: 18px;">
+        Theo phân công tại tài liệu đặc tả <a href="file:///d:/Intern/YeuCauThucTap.pdf" class="file-btn" style="padding: 2px 8px; font-size: 0.8rem; display: inline-flex;">YeuCauThucTap.pdf</a> (Đề tài 3), Tuần 1 tập trung khảo sát và thu thập dữ liệu thô. Khi bước vào Tuần 2, hệ thống phải đối mặt với các nút thắt kỹ thuật còn tồn đọng cần phải giải quyết dứt điểm trước khi tiến hành Chunking:
+      </p>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Hạng mục công việc</th>
+              <th>Trạng thái kết thúc Tuần 1</th>
+              <th>Tồn đọng chuyển giao sang Tuần 2</th>
+              <th>Kết quả giải quyết trong Tuần 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Dữ liệu Crawl Web</strong></td>
+              <td><span class="badge badge-warning">Crawl thô 141 bài</span></td>
+              <td>Dữ liệu còn lẫn tiêu đề trùng lặp, 37 tên khoa/phòng ban viết hoa/sai chính tả, CSV vỡ cấu trúc mảng links/tags.</td>
+              <td><span class="badge badge-success">Hoàn thành 100%</span> — Xuất bản sạch <a href="file:///d:/Intern/Bao_cao_tuan_2/crawl_v2_cleaned.json">crawl_v2_cleaned.json</a></td>
+            </tr>
+            <tr>
+              <td><strong>2. Trích xuất OCR từ PDF</strong></td>
+              <td><span class="badge badge-danger">525/529 lỗi chưa sửa</span></td>
+              <td>OCR nhận dạng từ 51 file PDF CTĐT bị 529 lỗi nhưng chỉ mới sửa thủ công 4 dòng thử nghiệm (tồn đọng 99.2%).</td>
+              <td><span class="badge badge-success">Giải quyết 529/529 lỗi</span> — Đã điền 100% vào <a href="file:///d:/Intern/Bao_cao_tuan_2/loi_crawl.xlsx">loi_crawl.xlsx</a></td>
+            </tr>
+            <tr>
+              <td><strong>3. Phân mảnh (Chunking)</strong></td>
+              <td><span class="badge badge-danger">Chưa triển khai</span></td>
+              <td>Bài viết dài tới 7,838 ký tự; khung môn học bị nhét chuỗi JSON thô, chưa thể đưa vào Embedding.</td>
+              <td><span class="badge badge-success">Đã sinh 496 Chunks</span> — Thuật toán Hybrid Splitting lưu tại <a href="file:///d:/Intern/Bao_cao_tuan_2/clean_chunks.json">clean_chunks.json</a></td>
+            </tr>
+            <tr>
+              <td><strong>4. Gắn Siêu dữ liệu (Metadata)</strong></td>
+              <td><span class="badge badge-danger">Chưa có schema</span></td>
+              <td>Thiếu siêu dữ liệu danh mục, đơn vị ban hành và link trích dẫn nguồn trên từng đoạn văn bản.</td>
+              <td><span class="badge badge-success">Đóng gói 12 trường</span> — Phục vụ lọc trước truy vấn (Metadata Pre-filtering).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 2: Giải quyết dứt điểm các vấn đề tồn đọng từ Tuần 1 -->
+    <section class="section" id="ton-dong-tuan-1">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="number">2</span>
+          Giải Quyết Triệt Để Các Vấn Đề Tồn Đọng Từ Tuần 1
+        </div>
+      </div>
+
+      <!-- Vấn đề 1 -->
+      <h3 style="margin-top: 10px; margin-bottom: 12px; font-size: 1.2rem; color: var(--primary-light);">
+        2.1. Vấn đề 1: Dữ liệu crawl website còn thô, nhiễu và thiếu nhất quán
+      </h3>
+
+      <div class="flow-container">
+        <div class="flow-card bad">
+          <div class="flow-badge">🔴 Thực trạng tồn đọng</div>
+          <div class="flow-title">Dữ liệu thô từ Tuần 1</div>
+          <div class="flow-body">
+            Xem file gốc: <a href="file:///d:/Intern/Bao_cao_tuan_2/crawl_v2.json">crawl_v2.json</a><br><br>
+            • <strong>37 phòng ban/khoa bị lỗi danh xưng</strong>: Viết hoa toàn bộ (<code>KHOA CÔNG NGHỆ THÔNG TIN</code>), sai chính tả (<code>Viên nghiên cứu nhận thức...</code>), khoảng trắng kép (<code>Khảo thí và  Đảm bảo</code>).<br>
+            • <strong>Trùng lặp tiêu đề</strong>: Tiêu đề bị crawler gắn lặp lại 2 lần ở đầu trường <code>content</code>.<br>
+            • <strong>Vỡ cấu trúc CSV</strong>: Trường mảng <code>links</code>, <code>tags</code> bị nối chuỗi làm hỏng parser.
+          </div>
+        </div>
+
+        <div class="flow-card action">
+          <div class="flow-badge">🟡 Cách xử lý trong Tuần 2</div>
+          <div class="flow-title">Pipeline Tự Động Hóa</div>
+          <div class="flow-body">
+            Code thực thi: <a href="file:///d:/Intern/Bao_cao_tuan_2/clean_crawl_data.py">clean_crawl_data.py</a><br><br>
+            • <strong>Xây dựng Dictionary chuẩn hóa</strong>: Áp dụng từ điển ánh xạ 1-1 cho toàn bộ danh xưng các đơn vị TLU.<br>
+            • <strong>Regex Strip Title</strong>: Tự động phát hiện và cắt bỏ đoạn tiêu đề lặp ở đầu nội dung.<br>
+            • <strong>Clean Whitespaces</strong>: Loại bỏ ký tự điều khiển, khoảng trắng kép và rút gọn dòng trống liên tiếp.
+          </div>
+        </div>
+
+        <div class="flow-card good">
+          <div class="flow-badge">🟢 Kết quả đạt được</div>
+          <div class="flow-title">Tập Ngữ Liệu Sạch 100%</div>
+          <div class="flow-body">
+            File kết quả: <a href="file:///d:/Intern/Bao_cao_tuan_2/crawl_v2_cleaned.json">crawl_v2_cleaned.json</a><br><br>
+            • <strong>141 tài liệu sạch tuyệt đối</strong>.<br>
+            • <strong>100% phòng ban đồng bộ</strong> chuẩn Title Case.<br>
+            • Cắt bỏ thành công toàn bộ rác tiêu đề lặp, giữ vẹn nguyên cấu trúc mảng đối tượng JSON để nạp thẳng vào RAG.
+          </div>
+        </div>
+      </div>
+
+      <!-- Minh họa Before / After Vấn đề 1 -->
+      <div style="margin: 16px 0;">
+        <h4 style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 8px;">Ví Dụ Thực Tế Trước & Sau Khi Xử Lý Văn Bản (Bản ghi <code>page-co-cau-to-chuc</code>):</h4>
+        <div class="diff-box">
+          <span class="diff-line diff-del">- [GỐC]: "Cơ cấu tổ chức\nCơ cấu tổ chức|Trường Đại học Thăng Long\nTrường Đại học Thăng Long tự hào có  đội ngũ..."</span>
+          <span class="diff-line diff-add">+ [SẠCH]: "Trường Đại học Thăng Long tự hào có đội ngũ cán bộ giảng viên là các Giáo sư, Phó Giáo sư, Tiến sĩ..."</span>
+        </div>
+      </div>
+
+      <hr style="border: 0; border-top: 1px dashed var(--border); margin: 30px 0;">
+
+      <!-- Vấn đề 2 -->
+      <h3 style="margin-top: 10px; margin-bottom: 12px; font-size: 1.2rem; color: var(--primary-light);">
+        2.2. Vấn đề 2: 529 lỗi OCR từ tài liệu đào tạo PDF bị "treo" (99.2% chưa xử lý)
+      </h3>
+
+      <div class="flow-container">
+        <div class="flow-card bad">
+          <div class="flow-badge">🔴 Thực trạng tồn đọng</div>
+          <div class="flow-title">Báo Động 99.2% Chưa Xử Lý</div>
+          <div class="flow-body">
+            Xem file đối chiếu: <a href="file:///d:/Intern/Bao_cao_tuan_2/loi_crawl.xlsx">loi_crawl.xlsx</a><br><br>
+            • Khi kết thúc Tuần 1, mới chỉ sửa thủ công đúng <strong>4/529 dòng (0.8%)</strong>, còn <strong>525 dòng bị bỏ trống</strong>.<br>
+            • <strong>92 mã học phần bị sai</strong>: <code>ECMI151</code>, <code>NWSI403</code>, <code>PHEII0I</code> làm tê liệt tìm kiếm từ khóa BM25.<br>
+            • <strong>39 dòng rác bảng</strong>: Các ký tự đường viền <code>| | ! ! | \ |</code> làm biến dạng vector embedding.
+          </div>
+        </div>
+
+        <div class="flow-card action">
+          <div class="flow-badge">🟡 Cách xử lý trong Tuần 2</div>
+          <div class="flow-title">Thuật Toán Sửa Lỗi Tự Động</div>
+          <div class="flow-body">
+            Code thực thi: <a href="file:///d:/Intern/Bao_cao_tuan_2/fill_loi_crawl.py">fill_loi_crawl.py</a><br><br>
+            • <strong>Quy tắc mã TLU (3 chữ cái + 4 số)</strong>: Tự động đổi ký tự nhầm lẫn <code>I/l ➡️ 1</code>, <code>O/o ➡️ 0</code>, phục hồi mã ngành.<br>
+            • <strong>Lọc rác đường kẻ ô</strong>: Phát hiện ký tự phân cách bảng rời rạc ➡️ Điền nhãn <code>[XÓA]</code>.<br>
+            • <strong>Từ điển học vụ tiếng Việt</strong>: Tách từ dính <code>Quảntrịhọocđại ➡️ Quản trị học đại cương</code>.
+          </div>
+        </div>
+
+        <div class="flow-card good">
+          <div class="flow-badge">🟢 Kết quả đạt được</div>
+          <div class="flow-title">Xử Lý Hoàn Tất 100%</div>
+          <div class="flow-body">
+            Bản sao lưu: <a href="file:///d:/Intern/Bao_cao_tuan_2/loi_crawl_hoan_thien.xlsx">loi_crawl_hoan_thien.xlsx</a><br><br>
+            • <strong>Giải quyết 529/529 lỗi (0 ô trống)</strong>.<br>
+            • Phục hồi chính xác 92 mã học phần trọng yếu.<br>
+            • Xóa bỏ 82 chuỗi rác bảng viền, bóc tách 395 cụm từ dính, chuẩn hóa 100% số và ngày tháng.
+          </div>
+        </div>
+      </div>
+
+      <!-- Bảng thống kê phân loại 529 lỗi OCR -->
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Nhóm lỗi phát hiện</th>
+              <th>Số lượng</th>
+              <th>Tỷ lệ</th>
+              <th>Mẫu lỗi OCR thực tế</th>
+              <th>Phương án đã khắc phục & Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Nhiễu bảng (dòng ký tự rời)</strong></td>
+              <td>39 lỗi</td>
+              <td>7.4%</td>
+              <td><code>P | | ! ! | | | \ |</code>, <code>` = A A A | A</code></td>
+              <td><span class="badge badge-danger">[XÓA]</span> — Xóa sạch rác đường kẻ bảng</td>
+            </tr>
+            <tr>
+              <td><strong>Sai mã học phần</strong></td>
+              <td>92 lỗi</td>
+              <td>17.4%</td>
+              <td><code>ECMI151</code>, <code>NWSI403</code>, <code>PHEII0I</code></td>
+              <td><span class="badge badge-success">ECM1151</span>, <span class="badge badge-success">NWS1403</span>, <span class="badge badge-success">PHE1101</span> (Chuẩn 3 chữ + 4 số)</td>
+            </tr>
+            <tr>
+              <td><strong>Sai chữ (từ dính, sai dấu)</strong></td>
+              <td>395 lỗi</td>
+              <td>74.7%</td>
+              <td><code>Quảntrịhọocđại</code>, <code>đfinance</code>, <code>sơhhmmnmmmmm</code></td>
+              <td><code>Quản trị học đại cương</code>, <code>finance</code>, <span class="badge badge-danger">[XÓA]</span></td>
+            </tr>
+            <tr>
+              <td><strong>Sai số (lẫn chữ cái)</strong></td>
+              <td>2 lỗi</td>
+              <td>0.4%</td>
+              <td><code>I2</code>, <code>I12</code></td>
+              <td><span class="badge badge-success">12</span>, <span class="badge badge-success">112</span> (Thay I thành số 1)</td>
+            </tr>
+            <tr>
+              <td><strong>Sai ngày tháng</strong></td>
+              <td>1 lỗi</td>
+              <td>0.2%</td>
+              <td><code>05/0/2027</code></td>
+              <td><span class="badge badge-success">05/07/2027</span> (Chuẩn hóa dd/mm/yyyy theo hướng dẫn)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="file-actions">
+        <a href="file:///d:/Intern/Bao_cao_tuan_2/loi_crawl.xlsx" class="file-btn">
+          📊 Mở File Excel Lỗi Đã Điền: loi_crawl.xlsx
+        </a>
+        <a href="file:///d:/Intern/Bao_cao_tuan_2/fill_loi_crawl.py" class="file-btn">
+          ⚙️ Mã Nguồn Script Sửa Lỗi: fill_loi_crawl.py
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 3: Thiết kế và triển khai Pipeline Chunking -->
+    <section class="section" id="chunking">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="number">3</span>
+          Thiết Kế Và Triển Khai Pipeline Chunking
+        </div>
+      </div>
+
+      <p style="color: var(--text-muted); margin-bottom: 20px;">
+        Pipeline phân đoạn văn bản được lập trình tại <a href="file:///d:/Intern/Bao_cao_tuan_2/chunking_pipeline.py">chunking_pipeline.py</a>. Sử dụng kỹ thuật <strong>Hybrid Splitting</strong> kết hợp giữa thuật toán cắt đệ quy tự nhiên và bóc tách cấu trúc khung môn học theo năm:
+      </p>
+
+      <!-- Charts Grid -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h4>Phân Bố Số Lượng Chunks Theo Danh Mục</h4>
+          <canvas id="categoryChart" style="max-height: 260px;"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Thông Số Phân Đoạn & Độ Dài Chunk</h4>
+          <canvas id="lengthChart" style="max-height: 260px;"></canvas>
+        </div>
+      </div>
+
+      <!-- Thông số kỹ thuật Chunking -->
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Tham số kỹ thuật</th>
+              <th>Giá trị cấu hình</th>
+              <th>Cơ sở lý thuyết & Giải thích mục đích</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Chiến lược phân tách</strong></td>
+              <td><code>Recursive Character + Curriculum Structured</code></td>
+              <td>Ưu tiên ngắt theo đoạn văn (`\n\n`), câu (`. `), từ (` `) để không làm đứt mạch văn bản. Riêng 25 ngành đại học bóc tách riêng từng Năm học & Khối kiến thức môn học.</td>
+            </tr>
+            <tr>
+              <td><strong>Kích thước mục tiêu (Chunk Size)</strong></td>
+              <td><code>650 – 700 ký tự</code> (~130 – 150 từ)</td>
+              <td>Kích thước lý tưởng nhất để vector embedding có mật độ ngữ nghĩa sắc nét, không bị pha loãng thông tin và vừa vặn cửa sổ ngữ cảnh.</td>
+            </tr>
+            <tr>
+              <td><strong>Độ gối đầu (Chunk Overlap)</strong></td>
+              <td><code>120 ký tự</code> (~18%)</td>
+              <td>Giữ nguyên vẹn mối liên kết giữa 2 đoạn liên tiếp; câu kết của chunk $i$ sẽ gối đầu vào đầu chunk $i+1$, tránh cắt đứt ý nghĩa của câu.</td>
+            </tr>
+            <tr>
+              <td><strong>Tổng số Chunk tạo thành</strong></td>
+              <td><strong>496 Chunks</strong></td>
+              <td>Từ 141 tài liệu gốc, sinh ra 496 chunks độc lập sẵn sàng nạp vào Vector Database ở Tuần 3.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="file-actions">
+        <a href="file:///d:/Intern/Bao_cao_tuan_2/clean_chunks.json" class="file-btn">
+          📦 Xem Dữ Liệu Chunks JSON: clean_chunks.json
+        </a>
+        <a href="file:///d:/Intern/Bao_cao_tuan_2/clean_chunks.csv" class="file-btn">
+          📑 Xem Bảng Chunks CSV: clean_chunks.csv
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 4: Đóng gói Metadata & Clean Corpus -->
+    <section class="section" id="metadata">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="number">4</span>
+          Đóng Gói Siêu Dữ Liệu (Metadata) & Bộ Ngữ Liệu Sạch
+        </div>
+      </div>
+
+      <p style="color: var(--text-muted); margin-bottom: 18px;">
+        Trong hệ thống RAG, văn bản thuần túy không đủ để đảm bảo độ chính xác. Mỗi chunk đều được làm giàu với 12 trường siêu dữ liệu để hỗ trợ <strong>Metadata Pre-filtering</strong> (lọc theo phòng ban/danh mục trước khi tính khoảng cách Cosine) và <strong>Source Grounding</strong> (dẫn chứng link bài viết gốc trên website trường):
+      </p>
+
+      <!-- Minh họa JSON Chunk -->
+      <h4 style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 8px;">Minh Họa Một Bản Ghi Chunk Hoàn Chỉnh Kèm Siêu Dữ Liệu:</h4>
+      <div class="diff-box" style="color: #93c5fd;">
+<pre>{
+  "chunk_id": "nganh-cong-nghe-thong-tin_c002",
+  "doc_id": "nganh-cong-nghe-thong-tin",
+  "chunk_index": 2,
+  "total_chunks_in_doc": 5,
+  "section": "Năm 1 - Môn học cơ sở",
+  "title": "Ngành Công nghệ thông tin",
+  "category": "chuong_trinh_dao_tao",
+  "content_type": "major",
+  "department": "Khoa Công nghệ thông tin",
+  "date": "2026-06-26",
+  "source_url": "https://thanglong.edu.vn/nganh-hoc/cong-nghe-thong-tin",
+  "char_length": 482,
+  "word_count": 94,
+  "text": "Chương trình đào tạo ngành: Ngành Công nghệ thông tin\nGiai đoạn: Năm 1\nNhóm môn: Môn học cơ sở\nDanh sách môn học (9 môn): Giải tích, Đại số tuyến tính, Xác suất thống kê, Lập trình cơ bản, Lập trình hướng đối tượng, Toán rời rạc, Cấu trúc dữ liệu và giải thuật, Cơ sở dữ liệu, Tiếng Anh chuyên ngành."
+}</pre>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Trường Metadata</th>
+              <th>Kiểu dữ liệu</th>
+              <th>Ứng dụng trong vận hành RAG</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>chunk_id</code></td>
+              <td>String (UUID/ID)</td>
+              <td>Định danh duy nhất phục vụ cập nhật (Upsert) và xóa chunk trong Vector DB.</td>
+            </tr>
+            <tr>
+              <td><code>category</code></td>
+              <td>Enum / String</td>
+              <td>Lọc trước truy vấn: Khi sinh viên hỏi lịch thi, hệ thống chỉ tìm trong chunks có <code>category == 'lich_thi'</code>.</td>
+            </tr>
+            <tr>
+              <td><code>department</code></td>
+              <td>String</td>
+              <td>Phân loại đơn vị chịu trách nhiệm (Phòng Đào tạo, Khảo thí, Công tác sinh viên).</td>
+            </tr>
+            <tr>
+              <td><code>date</code></td>
+              <td>Date (YYYY-MM-DD)</td>
+              <td>Kiểm soát tính thời sự: Ưu tiên thông báo của năm học mới nhất (2026), loại bỏ thông báo hết hạn.</td>
+            </tr>
+            <tr>
+              <td><code>source_url</code></td>
+              <td>URL String</td>
+              <td>Dẫn chứng link bài viết trực tiếp để sinh viên bấm vào xem văn bản gốc có chữ ký đóng dấu.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 5: Thảo luận chuyên sâu & Các giải pháp thay thế -->
+    <section class="section" id="nghien-cuu">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="number">5</span>
+          Thảo Luận Mở Rộng: Các Phương Pháp Thay Thế
+        </div>
+      </div>
+
+      <p style="color: var(--text-muted); margin-bottom: 18px;">
+        Để trả lời câu hỏi phản biện: <em>"Ngoài phương pháp đã làm, còn những kỹ thuật nào khác và tại sao RAG vẫn là lựa chọn số 1?"</em>, nhóm đã nghiên cứu và so sánh đa chiều các phương án:
+      </p>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Phương pháp Chunking</th>
+              <th>Cơ chế hoạt động</th>
+              <th>Ưu điểm nổi bật</th>
+              <th>Hạn chế / Thách thức</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Recursive Character (Đang áp dụng)</strong></td>
+              <td>Cắt theo thứ tự ưu tiên đoạn ➡️ câu ➡️ từ kèm overlap.</td>
+              <td>Tốc độ cực nhanh, giữ được ngữ pháp tự nhiên, ổn định cao.</td>
+              <td>Chưa đo được ranh giới đổi chủ đề ngữ nghĩa trừu tượng.</td>
+            </tr>
+            <tr>
+              <td><strong>Semantic Chunking</strong></td>
+              <td>Tính biến thiên khoảng cách Cosine giữa 2 câu liên tiếp.</td>
+              <td>Các đoạn có tính trọn vẹn chủ đề rất cao.</td>
+              <td>Tốn thêm chi phí nhúng embedding ban đầu, dễ làm vỡ cấu trúc bảng biểu.</td>
+            </tr>
+            <tr>
+              <td><strong>Parent-Child Chunking</strong></td>
+              <td>Child chunk (100 tokens) để tìm kiếm, Parent chunk (800 tokens) để sinh lời giải.</td>
+              <td>Truy xuất siêu chính xác nhưng vẫn cung cấp đủ ngữ cảnh rộng cho LLM.</td>
+              <td>Cấu trúc Vector DB phức tạp hơn, tốn dung lượng lưu trữ index gấp đôi.</td>
+            </tr>
+            <tr>
+              <td><strong>Late Chunking (Jina AI - 2024)</strong></td>
+              <td>Cho toàn bộ văn bản qua Transformer trước, sau đó mới gom vector chunk.</td>
+              <td>Bảo toàn liên kết ngữ cảnh toàn cục (Global Context).</td>
+              <td>Đòi hỏi mô hình Embedding hỗ trợ context cực dài.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background: var(--bg); border-left: 4px solid var(--primary); padding: 18px; border-radius: 8px; margin-top: 20px;">
+        <h4 style="font-size: 1rem; color: var(--text); margin-bottom: 6px;">Có Thể Dùng LLM Ngữ Cảnh Triệu Tokens (Như Gemini 1.5 Pro) Thay Thế Hoàn Toàn RAG Không?</h4>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          <strong>Không khả thi trong thực tế vì 3 nguyên nhân:</strong><br>
+          1. <strong>Chi phí API khổng lồ</strong>: Mỗi câu hỏi đơn giản của sinh viên ("học lại môn này bao nhiêu tiền?") lại phải nhồi hàng triệu tokens của toàn bộ trường.<br>
+          2. <strong>Độ trễ quá lớn</strong>: Thời gian xử lý ngữ cảnh triệu tokens mất từ 30 đến 60 giây, không thể đáp ứng trải nghiệm chatbot trực tuyến.<br>
+          3. <strong>Hiện tượng bỏ sót (Kim đáy bể)</strong>: Dù ngữ cảnh lớn, mô hình vẫn có xác suất bỏ qua một chi tiết ngắn nằm giữa hàng nghìn trang quy chế.<br>
+          👉 <strong>Kết luận:</strong> Pipeline <em>RAG truyền thống kết hợp Chunking & Metadata</em> vẫn là tiêu chuẩn vàng tối ưu nhất.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 6: Kế hoạch triển khai Tuần 3 -->
+    <section class="section" id="ke-hoach-tuan-3">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="number">6</span>
+          Kế Hoạch & Mục Tiêu Triển Khai Tuần 3
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot done"></div>
+          <div class="timeline-content">
+            <h4>Hoàn thành Tuần 2: Clean Corpus & Chunking</h4>
+            <p>Đã hoàn thành 100% dữ liệu sạch (141 bài web), sửa 529 lỗi OCR, đóng gói 496 chunks kèm metadata.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>Nhiệm vụ 1: Benchmark Mô Hình Embedding Tiếng Việt (Tuần 3)</h4>
+            <p>Thực nghiệm so sánh 3 mô hình nhúng: <code>BAAI/bge-m3</code>, <code>intfloat/multilingual-e5-large</code>, và <code>bkai-foundation-models/vietnamese-bi-encoder</code> về tốc độ vector hóa và độ tương đồng ngữ nghĩa.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>Nhiệm vụ 2: Thiết Lập Vector Database (ChromaDB / FAISS)</h4>
+            <p>Khởi tạo cơ sở dữ liệu Vector cục bộ, cấu hình chỉ mục HNSW và nạp toàn bộ 496 chunks cùng siêu dữ liệu.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>Nhiệm vụ 3: Đánh Giá Truy Vấn Thử Nghiệm (Retrieval Evaluation)</h4>
+            <p>Xây dựng bộ 10 câu hỏi trắc nghiệm học vụ thực tế đo lường Top-k Recall và MRR (Mean Reciprocal Rank).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Báo Cáo Tiến Độ Thực Tập Tuần 2 — Đề tài RAG Tra Cứu Học Vụ TLU &copy; 2026</p>
+    <p style="margin-top: 6px;">Trường Đại học Thăng Long — Khoa Công nghệ thông tin</p>
+  </footer>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const body = document.body;
+      const btn = document.getElementById('themeToggleBtn');
+      const icon = document.getElementById('themeIcon');
+      if (body.getAttribute('data-theme') === 'light') {
+        body.removeAttribute('data-theme');
+        icon.textContent = '☀️';
+      } else {
+        body.setAttribute('data-theme', 'light');
+        icon.textContent = '🌙';
+      }
+    }
+
+    // Chart.js initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1. Category Chart
+      const ctxCat = document.getElementById('categoryChart').getContext('2d');
+      new Chart(ctxCat, {
+        type: 'doughnut',
+        data: {
+          labels: ['CTĐT & Môn học', 'Quy chế', 'Lịch thi', 'Học phí', 'Chức năng đơn vị', 'Khác'],
+          datasets: [{
+            data: [388, 22, 21, 20, 17, 28],
+            backgroundColor: [
+              '#2563eb',
+              '#10b981',
+              '#f59e0b',
+              '#ef4444',
+              '#06b6d4',
+              '#8b5cf6'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: '#9ca3af', boxWidth: 12, font: { size: 11 } }
+            }
+          }
+        }
+      });
+
+      // 2. Length Stats Chart
+      const ctxLen = document.getElementById('lengthChart').getContext('2d');
+      new Chart(ctxLen, {
+        type: 'bar',
+        data: {
+          labels: ['Ngắn nhất (Min)', 'Phân vị 25%', 'Trung vị (Median)', 'Trung bình (Mean)', 'Phân vị 75%', 'Dài nhất (Max)'],
+          datasets: [{
+            label: 'Số ký tự',
+            data: [58, 272, 436, 447.6, 636.5, 819],
+            backgroundColor: '#3b82f6',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(255,255,255,0.05)' },
+              ticks: { color: '#9ca3af' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#9ca3af', font: { size: 10 } }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
