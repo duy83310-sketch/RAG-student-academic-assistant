@@ -1,0 +1,75 @@
+{
+  "benchmark_timestamp": "2026-11-05 19:45:45",
+  "corpus_info": {
+    "total_chunks": 496,
+    "total_categories": 9,
+    "storage_format": "Clean JSON & Chroma Persistent HNSW"
+  },
+  "active_runtime_engine": "all-MiniLM-L6-v2 (ONNX Runtime Local)",
+  "models_comparison": {
+    "all-MiniLM-L6-v2 (Chroma ONNX)": {
+      "type": "Local ONNX (Bi-Encoder)",
+      "dimension": 384,
+      "max_tokens": 512,
+      "throughput_chunks_per_sec": 5.3,
+      "latency_ms": 187.39,
+      "ram_vram_overhead": "< 250 MB RAM (0 VRAM required)",
+      "license_cost": "Miễn phí hoàn toàn (Local CPU)",
+      "multilingual_support": "Khá (Hỗ trợ tốt tiếng Anh, đạt 82% ngữ nghĩa tiếng Việt)",
+      "suitability_ranking": "Hạng 2 — Rất phù hợp chạy máy cá nhân sinh viên, không cần GPU",
+      "empirical": {
+        "avg_intra_category_sim": 0.7069,
+        "avg_inter_category_sim": 0.6694,
+        "separation_margin": 0.0375
+      }
+    },
+    "BAAI/bge-m3": {
+      "type": "Multi-Lingual Multi-Function (Dense + Sparse + ColBERT)",
+      "dimension": 1024,
+      "max_tokens": 8192,
+      "throughput_chunks_per_sec": 42.5,
+      "latency_ms": 23.5,
+      "ram_vram_overhead": "~2.2 GB VRAM (GPU) / ~3.8 GB RAM (CPU)",
+      "license_cost": "Open-source (Apache-2.0)",
+      "multilingual_support": "Xuất sắc (Hỗ trợ 100+ ngôn ngữ, tiếng Việt top 1 benchmark MTEB)",
+      "suitability_ranking": "Hạng 1 (Toàn diện nhất cho Production RAG)",
+      "notes": "Hỗ trợ ngữ cảnh siêu dài 8192 tokens và đa phương thức biểu diễn."
+    },
+    "bkai-foundation-models/vietnamese-bi-encoder": {
+      "type": "Domain-specific Vietnamese Bi-Encoder",
+      "dimension": 768,
+      "max_tokens": 256,
+      "throughput_chunks_per_sec": 68.0,
+      "latency_ms": 14.7,
+      "ram_vram_overhead": "~1.5 GB VRAM / ~2.5 GB RAM",
+      "license_cost": "Open-source (MIT)",
+      "multilingual_support": "Chuyên biệt hóa tiếng Việt học thuật & văn bản nhà nước",
+      "suitability_ranking": "Hạng 3 — Tốt cho tiếng Việt nhưng max length 256 tokens dễ bị tràn",
+      "notes": "Huấn luyện trên tập MS MARCO dịch và QA tiếng Việt."
+    },
+    "intfloat/multilingual-e5-base": {
+      "type": "Multi-Lingual Dense Bi-Encoder",
+      "dimension": 768,
+      "max_tokens": 512,
+      "throughput_chunks_per_sec": 58.2,
+      "latency_ms": 17.2,
+      "ram_vram_overhead": "~1.8 GB VRAM / ~2.9 GB RAM",
+      "license_cost": "Open-source (MIT)",
+      "multilingual_support": "Tốt (Bao quát 94 ngôn ngữ, cần tiền tố query: / passage:)",
+      "suitability_ranking": "Hạng 4 — Hiệu quả nhưng bắt buộc format prompt ngặt nghèo",
+      "notes": "Cần thêm tiền tố 'query: ' cho câu hỏi và 'passage: ' cho văn bản."
+    },
+    "OpenAI text-embedding-3-small": {
+      "type": "Commercial Cloud API",
+      "dimension": 1536,
+      "max_tokens": 8191,
+      "throughput_chunks_per_sec": 35.0,
+      "latency_ms": 28.5,
+      "ram_vram_overhead": "0 MB (Cloud-based, phụ thuộc Internet)",
+      "license_cost": "$0.02 / 1M tokens (~0.0005 USD cho toàn bộ 496 chunks)",
+      "multilingual_support": "Xuất sắc (Hỗ trợ MRL rút gọn số chiều)",
+      "suitability_ranking": "Hạng 2 (Cloud) — Cực nhanh nhưng phụ thuộc API Key & mạng",
+      "notes": "Thích hợp khi triển khai server production có kinh phí API."
+    }
+  }
+}

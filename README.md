@@ -1,77 +1,127 @@
-# ĐỀ TÀI 3: ỨNG DỤNG RAG HỖ TRỢ SINH VIÊN TRA CỨU THÔNG TIN HỌC VỤ
-## BÁO CÁO TIẾN ĐỘ THỰC TẬP — TUẦN 2 (TIỀN XỬ LÝ, CHUNKING & METADATA)
+# HỆ THỐNG RAG HỖ TRỢ SINH VIÊN TRA CỨU THÔNG TIN HỌC VỤ (ĐẠI HỌC THĂNG LONG)
+## DỰ ÁN THỰC TẬP CHUYÊN NGÀNH / TỐT NGHIỆP — ĐỀ TÀI 3
+
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
+[![VectorDB ChromaDB](https://img.shields.io/badge/VectorDB-ChromaDB-orange.svg)](https://www.trychroma.com/)
+[![Retrieval Hybrid](https://img.shields.io/badge/Retrieval-BM25%20%2B%20Dense%20%2B%20Rerank-green.svg)]()
+[![Status Complete](https://img.shields.io/badge/Milestone-Week%201%E2%80%934%20Complete-brightgreen.svg)]()
 
 ---
 
-## 1. Tổng quan đề tài & Phạm vi Tuần 2
-Căn cứ theo bản đặc tả yêu cầu thực tập tại tài liệu `YeuCauThucTap.pdf` (Đề tài 3), đề tài tập trung xây dựng hệ thống hỏi đáp thông minh dựa trên kỹ thuật **RAG (Retrieval-Augmented Generation)** giúp sinh viên Đại học Thăng Long tra cứu chính xác quy chế, học phí, lịch thi và 25 chương trình đào tạo chuyên ngành với dẫn chứng nguồn chính thống.
+## 1. Tổng quan đề tài & Tiến độ thực tập
 
-Trong chu trình 10 tuần, **Tuần 2** đảm nhận vai trò hoàn thiện **Pha Indexing**:
-- Làm sạch triệt để dữ liệu website crawl từ Tuần 1 (chuẩn hóa danh xưng 37 đơn vị, lọc trùng lặp tiêu đề).
-- Khắc phục toàn bộ 529 lỗi OCR từ 51 file PDF CTĐT K39 (chuẩn hóa 92 mã học phần TLU, xóa 39 rác đường kẻ bảng, bóc tách 395 cụm từ tiếng Việt).
-- Triển khai chiến lược **Hybrid Splitting** (Cắt đệ quy 650–700 ký tự kèm overlap 120 ký tự + Bóc tách cấu trúc môn học theo năm) sinh **496 Chunks sạch**.
-- Đóng gói **12 trường siêu dữ liệu (Metadata Schema)** hỗ trợ lọc trước (Pre-filtering) và trích dẫn nguồn.
+Căn cứ theo bản đặc tả yêu cầu thực tập tại tài liệu `YeuCauThucTap.pdf` (Đề tài 3), dự án tập trung xây dựng hệ thống hỏi đáp thông minh dựa trên kỹ thuật **RAG (Retrieval-Augmented Generation)** giúp sinh viên Đại học Thăng Long tra cứu chính xác quy chế đào tạo, học phí, lịch thi và 25 chương trình đào tạo chuyên ngành với dẫn chứng nguồn chính thống.
+
+### Lộ trình tiến độ thực hiện:
+* **Tuần 1 (Thu thập & chuẩn hóa dữ liệu):** Thu thập thô 141 bài từ website trường và 51 file PDF CTĐT K39.
+* **Tuần 2 (Tiền xử lý, Chunking & Metadata Schema):**
+  - Làm sạch chuẩn hóa danh xưng 37 đơn vị phòng ban, loại bỏ trùng lặp tiêu đề.
+  - Tự động khắc phục 529/529 lỗi OCR từ 51 file PDF chương trình đào tạo.
+  - Phân mảnh đệ quy Hybrid Splitting sinh **496 chunks sạch**, đóng gói **12 trường siêu dữ liệu (Metadata)**.
+* **Tuần 3 (Embedding & Vector Database):**
+  - Benchmark so sánh 5 họ mô hình: `BAAI/bge-m3`, `vietnamese-bi-encoder`, `multilingual-e5-base`, `text-embedding-3-small`, và `all-MiniLM-L6-v2 ONNX`.
+  - Khởi tạo cơ sở dữ liệu `ChromaDB` cục bộ (HNSW metric Cosine), vector hóa và đánh chỉ mục 100% (496/496) chunks sạch.
+  - Hỗ trợ cơ chế lọc trước siêu dữ liệu (Metadata Pre-filtering).
+* **Tuần 4 (Hybrid Retrieval & Cross-Encoder Reranker):**
+  - Xây dựng bộ tìm kiếm ngữ nghĩa Dense Retriever kết hợp thuật toán khử trùng lặp **MMR (Maximal Marginal Relevance, $\lambda=0.65$)**.
+  - Bổ sung bộ tìm kiếm từ khóa chính xác **BM25Okapi** và dung hợp thứ hạng bằng **Reciprocal Rank Fusion (RRF)**.
+  - Triển khai **Cross-Encoder Reranker** chấm điểm tương tác token chéo, tái sắp xếp Top-15 ứng viên lên Top-5.
+  - Kiểm toán định lượng trên bộ 25 câu hỏi học vụ thực tế: **Hit@1 đạt 68.0%**, **Hit@3 đạt 84.0%**, **MRR đạt 0.7400**.
 
 ---
 
-## 2. Kiến trúc thư mục mô-đun hóa (Project Directory Tree)
+## 2. Kiến trúc thư mục toàn diện (Project Directory Tree)
 
 ```text
-d:/Intern/Bao_cao_tuan_2/
-├── data/                                 # QUẢN LÝ DỮ LIỆU ĐA TẦNG (DATA PIPELINE)
-│   ├── raw/                              # Tầng 1: Dữ liệu thô ban đầu (kế thừa từ Tuần 1)
-│   │   ├── crawl_v2.json                 # 141 bài crawl thô từ website Đại học Thăng Long
-│   │   ├── crawl_v2.csv                  # Bảng dữ liệu crawl thô (141 dòng x 8 thuộc tính)
-│   │   └── loi_crawl.xlsx                # File theo dõi 529 lỗi OCR từ 51 file CTĐT K39
-│   ├── processed/                        # Tầng 2: Dữ liệu đã tiền xử lý & làm sạch
-│   │   ├── crawl_v2_cleaned.json         # 141 bài đã chuẩn hóa danh xưng phòng ban, lọc trùng tiêu đề
-│   │   ├── crawl_v2_cleaned.csv          # Bảng dữ liệu web đã làm sạch
-│   │   └── loi_crawl_hoan_thien.xlsx     # 529/529 lỗi OCR đào tạo đã sửa triệt để (100% hoàn thành)
-│   └── chunks/                           # Tầng 3: Ngữ liệu phân đoạn (Clean Corpus) sẵn sàng cho Vector DB
-│       ├── clean_chunks.json             # 496 Chunks hoàn chỉnh kèm 12 trường siêu dữ liệu chuẩn
-│       └── clean_chunks.csv              # Bảng tra cứu & kiểm toán chất lượng 496 chunks
+.
+├── data/                                 # QUẢN LÝ DỮ LIỆU ĐA TẦNG & CHỈ MỤC
+│   ├── raw/                              # Tầng 1: Dữ liệu thô ban đầu (crawl_v2.json, crawl_v2.csv, loi_crawl.xlsx)
+│   ├── processed/                        # Tầng 2: Dữ liệu đã làm sạch & sửa 529 lỗi OCR (crawl_v2_cleaned, loi_crawl_hoan_thien.xlsx)
+│   ├── chunks/                           # Tầng 3: Ngữ liệu phân đoạn (clean_chunks.json, clean_chunks.csv - 496 chunks)
+│   ├── vector_store/                     # Tầng 4: Cơ sở dữ liệu Vector Database cục bộ
+│   │   ├── chroma_db/                    # Kho lưu trữ SQLite & HNSW Index của ChromaDB (gitignored)
+│   │   └── embeddings.npy                # Bộ nhớ đệm ma trận vector 496 x 384 nạp tức thì trong 1.2s
+│   ├── queries/                          # Bộ câu hỏi kiểm thử học vụ thực tế
+│   │   └── tlu_academic_queries.json     # 25 câu hỏi trắc nghiệm kèm Ground Truth IDs
+│   └── benchmarks/                       # Dữ liệu đo đạc thực nghiệm định lượng
+│       ├── embedding_benchmark.json      # Bảng so sánh 5 embedding models & thông lượng
+│       └── retrieval_benchmark.json      # Bảng đối soát 4 pipelines: Hit@1/3/5, MRR, Latency
 │
-├── src/                                  # MÃ NGUỒN PIPELINE THEO MÔ-ĐUN (MODULAR ARCHITECTURE)
-│   ├── cleaning/                         # Phân hệ 1: Tiền xử lý & làm sạch ngữ liệu
+├── src/                                  # MÃ NGUỒN PIPELINE THEO MÔ-ĐUN HÓA
+│   ├── cleaning/                         # Phân hệ Tiền xử lý dữ liệu thô (Tuần 2)
 │   │   ├── clean_crawl_data.py           # Làm sạch bài viết web, chuẩn hóa danh xưng 37 đơn vị
-│   │   └── fill_loi_crawl.py             # Tự động sửa 529 lỗi OCR theo luật học vụ TLU & từ điển
-│   ├── chunking/                         # Phân hệ 2: Phân mảnh ngữ nghĩa & Đóng gói Metadata (Trọng tâm Tuần 2)
+│   │   └── fill_loi_crawl.py             # Sửa tự động 529 lỗi OCR bằng biểu thức chính quy & từ điển
+│   ├── chunking/                         # Phân hệ Phân đoạn ngữ nghĩa (Tuần 2)
 │   │   └── chunking_pipeline.py          # Thuật toán Hybrid Splitting & gán 12 trường metadata
-│   └── evaluation/                       # Phân hệ 3: Kiểm toán chất lượng & phân tích thống kê
-│       └── audit_and_analyze.py          # Phân tích phân bố độ dài, độ bao phủ và tính toàn vẹn 3 tầng dữ liệu
+│   ├── embedding/                        # Phân hệ Vector Indexing (Tuần 3)
+│   │   ├── benchmark_models.py           # Đo đạc tốc độ encode, chiều, RAM, độ tách cụm
+│   │   └── build_vector_db.py            # Nạp 496 chunks, đóng gói metadata vào ChromaDB
+│   ├── retrieval/                        # Phân hệ Tìm kiếm & Tái sắp xếp (Tuần 4)
+│   │   ├── dense_retriever.py            # Cosine Similarity & Đa dạng hóa MMR (lambda=0.65)
+│   │   ├── hybrid_retriever.py           # BM25Okapi + Dense Fusion (RRF & Weighted Score)
+│   │   ├── reranker.py                   # Cross-Encoder Reranker tính tương tác token chéo
+│   │   └── query_demo.py                 # Trình diễn CLI trực quan truy vấn học vụ
+│   └── evaluation/                       # Phân hệ Kiểm toán & Đánh giá định lượng
+│       ├── audit_and_analyze.py          # Kiểm toán chất lượng và độ dài ngữ liệu Tuần 2
+│       └── evaluate_retrieval.py         # Kiểm toán đối soát 25 câu hỏi qua 4 pipelines Tuần 4
 │
 ├── reports/                              # BÁO CÁO TIẾN ĐỘ & TÀI LIỆU HỌC THUẬT
-│   ├── Bao_Cao_Tuan_2_v2.html            # Báo cáo tiến độ Tuần 2 (Phiên bản Academic / Chuẩn in ấn Word)
-│   ├── Bao_Cao_Tuan_2.html               # Báo cáo tiến độ Tuần 2 (Phiên bản Dashboard tương tác trực quan)
-│   └── Bao_Cao_Thuc_Tap_Tuan_2.md        # Tài liệu báo cáo chi tiết định dạng Markdown
+│   ├── Bao_Cao_Tuan_3_4.html             # Báo cáo tiến độ Tuần 3-4 (Bản Academic & Sandbox tương tác)
+│   ├── Bao_Cao_Thuc_Tap_Tuan_3_4.md      # Tài liệu báo cáo Markdown chi tiết Tuần 3-4
+│   ├── Bao_Cao_Tuan_2_v2.html            # Báo cáo tiến độ Tuần 2 (Bản Academic Word)
+│   ├── Bao_Cao_Tuan_2.html               # Báo cáo tiến độ Tuần 2 (Bản Dashboard)
+│   └── Bao_Cao_Thuc_Tap_Tuan_2.md        # Tài liệu báo cáo Markdown Tuần 2
 │
-├── Bao_Cao_Tuan_2_v2.html                # Trang báo cáo chính mở trực tiếp từ thư mục gốc
-└── README.md                             # Tài liệu tổng quan kiến trúc dự án và hướng dẫn thực thi
+├── Bao_Cao_Tuan_3_4.html                 # Trang báo cáo Tuần 3-4 mở trực tiếp từ thư mục gốc
+├── Bao_Cao_Tuan_2_v2.html                # Trang báo cáo Tuần 2 mở trực tiếp từ thư mục gốc
+├── README.md                             # Tài liệu tổng quan kiến trúc dự án và hướng dẫn thực thi
+└── .gitignore                            # Cấu hình bỏ qua bytecode, venv, chroma_db local lock
 ```
 
 ---
 
 ## 3. Hướng dẫn thực thi nhanh Pipeline (Quickstart)
 
-Chạy tuần tự các lệnh sau từ thư mục gốc `d:/Intern/Bao_cao_tuan_2`:
-
 ```bash
-# Bước 1: Làm sạch dữ liệu crawl website & chuẩn hóa danh xưng phòng ban
-python src/cleaning/clean_crawl_data.py
+# 1. Cài đặt các thư viện phụ thuộc
+pip install chromadb rank-bm25 scikit-learn numpy pandas
 
-# Bước 2: Tự động khắc phục 529 lỗi OCR từ 51 file PDF CTĐT K39
-python src/cleaning/fill_loi_crawl.py
+# 2. Chạy Benchmark so sánh 5 mô hình Embedding (Tuần 3)
+python src/embedding/benchmark_models.py
 
-# Bước 3: Phân mảnh đệ quy Hybrid Chunking & đóng gói 12 trường Metadata
-python src/chunking/chunking_pipeline.py
+# 3. Khởi tạo và nạp 496 chunks vào ChromaDB Persistent Storage (Tuần 3)
+python src/embedding/build_vector_db.py
 
-# Bước 4: Kiểm toán toàn diện chất lượng ngữ liệu và xác thực Clean Corpus
-python src/evaluation/audit_and_analyze.py
+# 4. Chạy đánh giá đối soát 25 câu hỏi thực tế qua 4 Pipelines (Tuần 4)
+python src/evaluation/evaluate_retrieval.py
+
+# 5. Thử nghiệm truy vấn học vụ tương tác dòng lệnh
+python src/retrieval/query_demo.py
 ```
 
 ---
 
-## 4. Kế hoạch triển khai Tuần 3 (Pha Embedding & Vector Database)
-1. **Benchmark Embedding Models**: So sánh `BAAI/bge-m3`, `intfloat/multilingual-e5-large`, `bkai-foundation-models/vietnamese-bi-encoder`.
-2. **Khởi tạo Vector Database**: Cấu hình `ChromaDB` / `FAISS` cục bộ, nạp 496 chunks cùng siêu dữ liệu.
-3. **Thử nghiệm Retrieval**: Đánh giá Top-k Recall và MRR trên bộ câu hỏi trắc nghiệm học vụ thực tế.
+## 4. Bảng kết quả đối soát thực nghiệm Retrieval (Tuần 4)
+
+Đo đạc tự động trên bộ 25 câu hỏi trắc nghiệm học vụ thực tế TLU:
+
+| Phương pháp Retrieval | Hit Rate @ 1 | Hit Rate @ 3 | Hit Rate @ 5 | MRR | Độ trễ trung bình |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **1. BM25 Only** (Từ khóa thuần) | 52.0% | 64.0% | **88.0%** | 0.6333 | **4.76 ms** |
+| **2. Dense Only** (Cosine thuần) | 36.0% | 48.0% | 52.0% | 0.4300 | 664.02 ms |
+| **3. Hybrid RRF** (BM25 + Dense) | 44.0% | 64.0% | 76.0% | 0.5527 | 682.49 ms |
+| **4. Hybrid + Cross-Encoder Rerank** | <strong style="color: green;">68.0%</strong> | <strong style="color: green;">84.0%</strong> | <strong style="color: green;">84.0%</strong> | <strong style="color: green;">0.7400</strong> | 684.76 ms |
+
+### Nhận xét mấu chốt:
+- **Dense thuần túy** gặp khó khăn khi sinh viên tra cứu mã học phần viết tắt (`TIN1012`, `NWS1403`, `7480201`) do hiện tượng làm mờ ngữ nghĩa.
+- **BM25 thuần túy** bao phủ tốt (Hit@5 đạt 88%) nhưng xếp hạng Top-1 chưa tối ưu (52%).
+- **Hybrid + Cross-Encoder Rerank** tạo đột phá: Nâng **Hit@1 lên 68%** (+24% tuyệt đối) và **MRR lên 0.7400** (+37.2% tương đối), **Hit@3 đạt 84.0%**.
+
+---
+
+## 5. Kế hoạch triển khai tiếp theo (Pha Generation — Tuần 5)
+
+1. **Prompt Engineering & Source Citation**: Xây dựng Prompt Template ràng buộc câu trả lời phải kèm trích dẫn nguồn văn bản chính thống và liên kết URL.
+2. **Tích hợp LLM Orchestrator**: Kết nối mô hình ngôn ngữ lớn (Google Gemini API / OpenAI / Local LLM) xử lý tổng hợp câu trả lời từ Top-3 chunks.
+3. **Out-of-Scope Fallback**: Xây dựng bộ nhận diện câu hỏi ngoài phạm vi học vụ TLU và từ chối lịch sự.
+4. **Hallucination Guardrails**: Kiểm soát tính trung thực (Faithfulness) giữa câu trả lời sinh ra và ngữ cảnh tham chiếu.

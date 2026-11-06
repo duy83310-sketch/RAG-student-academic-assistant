@@ -17,3 +17,7 @@ Thumbs.db
 # Scratch and temp files
 scratch/
 *.tmp
+
+# Vector Database local persistent directory
+data/vector_store/chroma_db/
+*.sqlite3

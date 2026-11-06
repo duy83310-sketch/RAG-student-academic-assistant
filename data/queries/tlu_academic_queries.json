@@ -1,0 +1,256 @@
+[
+  {
+    "query_id": "Q01",
+    "query": "Học phí năm thứ nhất của ngành Công nghệ thông tin khóa 39 là bao nhiêu tiền một kỳ?",
+    "category": "hoc_phi",
+    "query_type": "hybrid",
+    "expected_chunk_ids": [
+      "nganh-cong-nghe-thong-tin_c010"
+    ],
+    "description": "Tra cứu học phí kỳ 1 và kỳ 2 ngành CNTT K39 (20.400.000 VNĐ/kỳ)"
+  },
+  {
+    "query_id": "Q02",
+    "query": "Mã ngành tuyển sinh và thời gian đào tạo tiêu chuẩn của ngành Công nghệ thông tin là gì?",
+    "category": "chuong_trinh_dao_tao",
+    "query_type": "keyword_code",
+    "expected_chunk_ids": [
+      "nganh-cong-nghe-thong-tin_c002"
+    ],
+    "description": "Mã ngành 7480201, thời gian đào tạo 3.5 năm"
+  },
+  {
+    "query_id": "Q03",
+    "query": "Năm thứ nhất ngành Công nghệ thông tin sinh viên học những môn cơ sở nào?",
+    "category": "chuong_trinh_dao_tao",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "nganh-cong-nghe-thong-tin_c011",
+      "nganh-cong-nghe-thong-tin_c003"
+    ],
+    "description": "Môn cơ sở năm 1: Giải tích, Đại số tuyến tính, Xác suất thống kê, Lập trình cơ bản..."
+  },
+  {
+    "query_id": "Q04",
+    "query": "Các môn bắt buộc chuyên ngành trong năm 1 ngành CNTT gồm những môn nào?",
+    "category": "chuong_trinh_dao_tao",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "nganh-cong-nghe-thong-tin_c012"
+    ],
+    "description": "Công nghệ web, Lập trình khoa học dữ liệu, Ứng dụng trí tuệ nhân tạo tạo sinh..."
+  },
+  {
+    "query_id": "Q05",
+    "query": "Lịch thi chính thức kỳ thi TOEIC chuẩn đầu ra nội bộ đợt tháng 6 năm 2026 diễn ra khi nào?",
+    "category": "lich_thi",
+    "query_type": "hybrid",
+    "expected_chunk_ids": [
+      "tb-2230_c001"
+    ],
+    "description": "Lịch thi TOEIC chuẩn đầu ra nội bộ tháng 6/2026"
+  },
+  {
+    "query_id": "Q06",
+    "query": "Quy định về định mức lệ phí thi TOEIC nội bộ kỹ năng Viết và Nói của trường Đại học Thăng Long?",
+    "category": "hoc_phi",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "tb-2261_c001"
+    ],
+    "description": "Định mức lệ phí thi TOEIC Viết và Nói nội bộ"
+  },
+  {
+    "query_id": "Q07",
+    "query": "Thông báo tập trung sinh viên đi học Giáo dục quốc phòng và An ninh năm 2026 quy định những gì?",
+    "category": "ke_hoach_dao_tao",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "tb-2233_c001"
+    ],
+    "description": "Kế hoạch tập trung học GDQP-AN năm 2026"
+  },
+  {
+    "query_id": "Q08",
+    "query": "Học phí học phần giáo dục quốc phòng an ninh cho sinh viên khóa 37 trở về trước nộp như thế nào?",
+    "category": "hoc_phi",
+    "query_type": "hybrid",
+    "expected_chunk_ids": [
+      "tb-2229_c001"
+    ],
+    "description": "Thu học phí GDQP-AN cho sinh viên K<=37"
+  },
+  {
+    "query_id": "Q09",
+    "query": "Cách tra cứu thời khóa biểu khóa 39 và danh sách các lớp bị hủy hoặc nghỉ tuần đầu học kỳ 1?",
+    "category": "tkb",
+    "query_type": "hybrid",
+    "expected_chunk_ids": [
+      "tb-2285_c001"
+    ],
+    "description": "Hướng dẫn tra cứu TKB khóa 39 và danh sách hủy lớp"
+  },
+  {
+    "query_id": "Q10",
+    "query": "Chức năng và nhiệm vụ chính của Phòng Đào tạo trường Đại học Thăng Long?",
+    "category": "chuc_nang_don_vi",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "unit-co-cau-to-chuc-phong-dao-tao_c001"
+    ],
+    "description": "Cơ cấu tổ chức và chức năng Phòng Đào tạo"
+  },
+  {
+    "query_id": "Q11",
+    "query": "Chức năng nhiệm vụ của Phòng Công nghệ thông tin tại Đại học Thăng Long?",
+    "category": "chuc_nang_don_vi",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "unit-co-cau-to-chuc-phong-cong-nghe-thong-tin_c001"
+    ],
+    "description": "Chức năng phòng CNTT TLU"
+  },
+  {
+    "query_id": "Q12",
+    "query": "Văn phòng trường phụ trách công tác y tế và chăm sóc sức khỏe sinh viên như thế nào?",
+    "category": "chuc_nang_don_vi",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "unit-co-cau-to-chuc-van-phong-truong_c001"
+    ],
+    "description": "Nhiệm vụ y tế, hành chính của Văn phòng Trường"
+  },
+  {
+    "query_id": "Q13",
+    "query": "Trung tâm Đảm bảo chất lượng và Khảo thí có nhiệm vụ gì về chuẩn đầu ra và tổ chức thi?",
+    "category": "chuc_nang_don_vi",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "unit-co-cau-to-chuc-trung-tam-dam-bao-chat-luong-va-khao-thi_c001"
+    ],
+    "description": "Nhiệm vụ Trung tâm Khảo thí và ĐBCL"
+  },
+  {
+    "query_id": "Q14",
+    "query": "Học phí lớp học tăng cường hệ đào tạo Liên thông ngành Điều dưỡng thu bao nhiêu?",
+    "category": "hoc_phi",
+    "query_type": "hybrid",
+    "expected_chunk_ids": [
+      "tb-2223_c001"
+    ],
+    "description": "Mức thu học phí lớp tăng cường Liên thông Điều dưỡng"
+  },
+  {
+    "query_id": "Q15",
+    "query": "Quyết định ban hành chương trình đào tạo áp dụng từ năm học 2026-2027 cho Khóa 39 có số hiệu bao nhiêu?",
+    "category": "chuong_trinh_dao_tao",
+    "query_type": "hybrid",
+    "expected_chunk_ids": [
+      "tb-2234_c001"
+    ],
+    "description": "Quyết định ban hành CTĐT K39 năm 2026-2027"
+  },
+  {
+    "query_id": "Q16",
+    "query": "Tổng quan thời gian đào tạo và tổ hợp xét tuyển ngành Khoa học máy tính?",
+    "category": "chuong_trinh_dao_tao",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "nganh-khoa-hoc-may-tinh_c001",
+      "nganh-khoa-hoc-may-tinh_c002"
+    ],
+    "description": "Thời gian và tổ hợp xét tuyển ngành KHMT"
+  },
+  {
+    "query_id": "Q17",
+    "query": "Lịch thi tăng cường học kỳ 2 năm học 2025-2026 được thông báo như thế nào?",
+    "category": "lich_thi",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "tb-2232_c001"
+    ],
+    "description": "Thông báo lịch thi tăng cường HK2 2025-2026"
+  },
+  {
+    "query_id": "Q18",
+    "query": "Mức học phí của ngành Điều dưỡng khóa 39 tại Đại học Thăng Long?",
+    "category": "hoc_phi",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "nganh-dieu-duong_c010"
+    ],
+    "description": "Học phí K39 ngành Điều dưỡng"
+  },
+  {
+    "query_id": "Q19",
+    "query": "Cơ hội việc làm sau khi tốt nghiệp ngành Công nghệ thông tin Đại học Thăng Long?",
+    "category": "chuong_trinh_dao_tao",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "nganh-cong-nghe-thong-tin_c007",
+      "nganh-cong-nghe-thong-tin_c008"
+    ],
+    "description": "Cơ hội nghề nghiệp lập trình viên Web, Mobile, Cloud, DevOps"
+  },
+  {
+    "query_id": "Q20",
+    "query": "Ngành Thiết kế đồ họa học các môn tự chọn nào trong năm thứ ba?",
+    "category": "chuong_trinh_dao_tao",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "nganh-thiet-ke-do-hoa_c012"
+    ],
+    "description": "Môn tự chọn năm 3 ngành Thiết kế đồ họa"
+  },
+  {
+    "query_id": "Q21",
+    "query": "Phòng Thông tin tư liệu Thư viện có nhiệm vụ gì trong việc phục vụ sinh viên?",
+    "category": "chuc_nang_don_vi",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "unit-co-cau-to-chuc-phong-thong-tin-tu-lieu-thu-vien_c001"
+    ],
+    "description": "Chức năng phòng Tư liệu Thư viện"
+  },
+  {
+    "query_id": "Q22",
+    "query": "Sinh viên tra cứu thông tin hỗ trợ và chính sách học bổng tại phòng ban nào?",
+    "category": "thong_tin_sinh_vien",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "unit-co-cau-to-chuc-phong-cong-tac-chinh-tri-sinh-vien_c001",
+      "page-sinh-vien-hien-tai_c002"
+    ],
+    "description": "Phòng Công tác Chính trị Sinh viên quản lý học bổng và hỗ trợ SV"
+  },
+  {
+    "query_id": "Q23",
+    "query": "Địa chỉ liên hệ chính thức và các kênh thông tin của Trường Đại học Thăng Long?",
+    "category": "thong_tin_lien_lac",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "page-lien-he_c001"
+    ],
+    "description": "Thông tin liên hệ đường Nghiêm Xuân Yêm, Đại Kim, Hoàng Mai"
+  },
+  {
+    "query_id": "Q24",
+    "query": "Quy định đánh giá chuẩn đầu ra ngoại ngữ tiếng Anh đối với sinh viên ngành Ngôn ngữ Anh?",
+    "category": "chuong_trinh_dao_tao",
+    "query_type": "semantic",
+    "expected_chunk_ids": [
+      "nganh-ngon-ngu-anh_c003"
+    ],
+    "description": "Chuẩn đầu ra tiếng Anh ngành Ngôn ngữ Anh"
+  },
+  {
+    "query_id": "Q25",
+    "query": "Lịch bảo vệ luận án Tiến sĩ cấp Trường cho nghiên cứu sinh ngành toán học?",
+    "category": "quy_che",
+    "query_type": "hybrid",
+    "expected_chunk_ids": [
+      "tb-2222_c001"
+    ],
+    "description": "Lịch bảo vệ luận án TS cấp Trường"
+  }
+]

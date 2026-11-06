@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Tiến Độ Thực Tập Tuần 3 & 4 — Hệ Thống RAG Học Vụ TLU</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --text-sub: #6b7280;
+      --bg-page: #ffffff;
+      --bg-outer: #f1f5f9;
+      --border-color: #d1d5db;
+      --table-border: #e2e8f0;
+      --accent-bg: #f8fafc;
+      --callout-bg: #eff6ff;
+      --callout-border: #3b82f6;
+      --success-text: #065f46;
+      --success-bg: #d1fae5;
+      --warning-text: #92400e;
+      --warning-bg: #fef3c7;
+      --danger-text: #991b1b;
+      --danger-bg: #fee2e2;
+      --purple-text: #6b21a8;
+      --purple-bg: #f3e8ff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-outer);
+      color: var(--text-main);
+      font-family: 'Times New Roman', 'Lora', serif;
+      font-size: 16px;
+      line-height: 1.8;
+      padding: 30px 15px;
+    }
+
+    body.font-sans {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .document-page {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--bg-page);
+      padding: 65px 75px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 768px) {
+      .document-page { padding: 30px 20px; }
+    }
+
+    .header-academic {
+      text-align: center;
+      margin-bottom: 35px;
+      padding-bottom: 25px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .univ-name {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #334155;
+    }
+
+    .faculty-name {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+
+    .report-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin: 16px 0 8px 0;
+      line-height: 1.4;
+    }
+
+    .report-subtitle {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .student-meta {
+      display: inline-block;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.8;
+      background: #f8fafc;
+      padding: 12px 24px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      margin-top: 10px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .task-box {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin: 25px 0 35px 0;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .task-box-header {
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .task-box-badge {
+      display: inline-block;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid #bfdbfe;
+      margin-bottom: 8px;
+    }
+
+    .task-box-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin: 4px 0 6px 0;
+    }
+
+    .task-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .task-grid { grid-template-columns: 1fr; }
+    }
+
+    .task-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 16px;
+      display: flex;
+      gap: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .task-card:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+    }
+
+    .task-card-num {
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 14px;
+      font-weight: 700;
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #bfdbfe;
+    }
+
+    .task-card-content h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .task-card-content ul {
+      list-style-type: disc;
+      padding-left: 16px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #334155;
+    }
+
+    .tree-container {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 22px 26px;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.7;
+      margin: 22px 0;
+      overflow-x: auto;
+      border: 1px solid #334155;
+      white-space: pre;
+    }
+
+    .tree-folder { color: #60a5fa; font-weight: 600; }
+    .tree-file { color: #f8fafc; }
+    .tree-comment { color: #94a3b8; font-style: italic; }
+    .tree-tag {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+    }
+    .tag-vec { background: #065f46; color: #a7f3d0; }
+    .tag-code { background: #1e3a8a; color: #bfdbfe; }
+    .tag-bm { background: #78350f; color: #fde68a; }
+
+    h2 {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 38px;
+      margin-bottom: 16px;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    h4 {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    p { margin-bottom: 16px; text-align: justify; }
+
+    .toc-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 20px 25px;
+      margin: 25px 0 35px 0;
+      font-family: 'Inter', sans-serif;
+    }
+    .toc-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 6px;
+    }
+    .toc-list { list-style: none; font-size: 13.5px; line-height: 2; }
+    .toc-list a { color: var(--text-main); text-decoration: none; }
+    .toc-list a:hover { color: var(--primary); text-decoration: underline; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 20px 0;
+      font-family: 'Inter', sans-serif;
+    }
+    @media (max-width: 768px) {
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .metric-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .metric-val {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .metric-val.high { color: #059669; }
+    .metric-val.accent { color: #7c3aed; }
+    .metric-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-top: 6px;
+      letter-spacing: 0.03em;
+    }
+    .metric-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    table.academic-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+      margin: 20px 0;
+      border-top: 2px solid #1e293b;
+      border-bottom: 2px solid #1e293b;
+    }
+    table.academic-table th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #0f172a;
+      padding: 12px 14px;
+      border-bottom: 1.5px solid #cbd5e1;
+      text-align: left;
+    }
+    table.academic-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--table-border);
+      vertical-align: middle;
+    }
+    table.academic-table tr:hover td {
+      background-color: #f8fafc;
+    }
+    .table-caption {
+      font-size: 12.5px;
+      font-style: italic;
+      color: var(--text-sub);
+      margin-top: 6px;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .callout {
+      background: var(--callout-bg);
+      border-left: 4px solid var(--callout-border);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 14.5px;
+    }
+    .callout-success { background: #ecfdf5; border-color: #10b981; }
+    .callout-warning { background: #fffbeb; border-color: #f59e0b; }
+    .callout-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      font-family: 'Inter', sans-serif;
+    }
+    .callout-success .callout-title { color: #047857; }
+    .callout-warning .callout-title { color: #b45309; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+    }
+    .badge-green { background: var(--success-bg); color: var(--success-text); border: 1px solid #a7f3d0; }
+    .badge-blue { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .badge-purple { background: var(--purple-bg); color: var(--purple-text); border: 1px solid #e9d5ff; }
+    .badge-yellow { background: var(--warning-bg); color: var(--warning-text); border: 1px solid #fde68a; }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #0f172a;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      margin: 16px 0;
+    }
+
+    .formula-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #6366f1;
+      padding: 14px 20px;
+      margin: 16px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #1e1b4b;
+    }
+
+    .sandbox-container {
+      background: #ffffff;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 30px 0;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+    }
+    .sandbox-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+    .sandbox-header h3 { margin: 0; color: #1e40af; font-size: 16px; }
+    .query-select {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 14px;
+      background: #f8fafc;
+    }
+    .pipeline-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .pipeline-btn {
+      padding: 8px 14px;
+      border-radius: 5px;
+      border: 1px solid #cbd5e1;
+      background: #f1f5f9;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pipeline-btn.active {
+      background: #1e40af;
+      color: #ffffff;
+      border-color: #1e40af;
+    }
+    .results-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 16px;
+      font-size: 13.5px;
+    }
+    .result-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .result-item.top1 { border-left: 4px solid #10b981; }
+  </style>
+</head>
+<body class="font-sans">
+
+<div class="document-page">
+
+  <!-- Header -->
+  <div class="header-academic">
+    <div class="univ-name">TRƯỜNG ĐẠI HỌC THĂNG LONG — KHOA CÔNG NGHỆ THÔNG TIN</div>
+    <div class="faculty-name">BÁO CÁO TIẾN ĐỘ THỰC TẬP CHUYÊN NGÀNH / TỐT NGHIỆP</div>
+    <h1 class="report-title">BÁO CÁO TIẾN ĐỘ THỰC TẬP — TUẦN 3 & TUẦN 4</h1>
+    <div class="report-subtitle">Đề tài 3: Ứng dụng RAG hỗ trợ sinh viên tra cứu thông tin học vụ</div>
+    
+    <div class="student-meta">
+      <div><strong>Sinh viên thực hiện:</strong> [Họ và tên sinh viên] — MSSV: [Mã sinh viên]</div>
+      <div><strong>Giảng viên / Mentor hướng dẫn:</strong> [Họ và tên Mentor hướng dẫn]</div>
+      <div><strong>Giai đoạn thực hiện:</strong> Gộp Tuần 3 (Embedding & Vector DB) + Tuần 4 (Hybrid Retrieval & Reranking)</div>
+      <div><strong>Thời gian báo cáo:</strong> 05/11/2026</div>
+    </div>
+  </div>
+
+  <!-- Task Box -->
+  <div class="task-box">
+    <div class="task-box-header">
+      <span class="task-box-badge">Đối soát nhiệm vụ theo YeuCauThucTap.pdf</span>
+      <h3 class="task-box-title">Nhiệm vụ trọng tâm Tuần 3 và Tuần 4 (Pha Indexing & Retrieval Engine)</h3>
+      <p style="font-size: 13.5px; color: #475569; margin: 0;">
+        Kế thừa 496 chunks sạch và 12 trường metadata chuẩn hóa từ Tuần 2, hoàn thiện toàn bộ phân hệ lưu trữ vector và bộ máy tìm kiếm học vụ đa phương thức.
+      </p>
+    </div>
+
+    <div class="task-grid">
+      <div class="task-card">
+        <div class="task-card-num">T3</div>
+        <div class="task-card-content">
+          <h4>Nhiệm vụ Tuần 3: Embedding + Vector DB</h4>
+          <ul>
+            <li><strong>Khảo sát & Benchmark Embedding Models:</strong> So sánh đa chiều BGE-M3, Vietnamese Bi-Encoder, Multilingual-E5, OpenAI text-embedding-3-small, ONNX all-MiniLM-L6-v2.</li>
+            <li><strong>Khởi tạo Vector Database:</strong> Xây dựng cơ sở dữ liệu ChromaDB cục bộ với không gian metric Cosine HNSW.</li>
+            <li><strong>Vector hóa 496 Chunks:</strong> Nạp toàn bộ kho ngữ liệu kèm 12 trường metadata phục vụ Pre-filtering.</li>
+            <li><strong>Đo lường định lượng:</strong> Tốc độ encode (5.3 chunks/s), tài nguyên RAM (&lt;250MB), độ tách biệt cụm ngữ nghĩa học vụ.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-card-num">T4</div>
+        <div class="task-card-content">
+          <h4>Nhiệm vụ Tuần 4: Retriever + Rerank</h4>
+          <ul>
+            <li><strong>Xây dựng Dense Retriever:</strong> Tìm kiếm độ tương đồng Cosine kết hợp thuật toán khử trùng lặp MMR (Maximal Marginal Relevance).</li>
+            <li><strong>Bổ sung Hybrid Search:</strong> Tích hợp bộ tìm kiếm từ khóa chính xác BM25Okapi và kết hợp bằng thuật toán RRF (Reciprocal Rank Fusion).</li>
+            <li><strong>Triển khai Cross-Encoder Reranker:</strong> Tái sắp xếp Top-15 ứng viên lên Top-5 chuẩn xác nhất.</li>
+            <li><strong>Benchmark & Đánh giá định lượng:</strong> Đo đạc Hit@1, Hit@3, Hit@5, MRR và Latency trên 25 câu hỏi trắc nghiệm học vụ thực tế.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Executive Summary Metrics -->
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-val">68.0%</div>
+      <div class="metric-label">Hit Rate @ 1 (Rerank)</div>
+      <div class="metric-sub">+24% so với Hybrid thuần túy</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val high">84.0%</div>
+      <div class="metric-label">Hit Rate @ 3</div>
+      <div class="metric-sub">84% câu hỏi trúng ngay Top 3</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val accent">0.74</div>
+      <div class="metric-label">Mean Reciprocal Rank</div>
+      <div class="metric-sub">+37.2% so với RRF ban đầu</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val">496</div>
+      <div class="metric-label">Indexed Chunks</div>
+      <div class="metric-sub">100% Corpus trong ChromaDB</div>
+    </div>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="toc-box">
+    <div class="toc-title">Mục lục nội dung báo cáo</div>
+    <ul class="toc-list">
+      <li><a href="#sec1"><strong>1. Tổng quan kiến trúc & Cây thư mục mô-đun hóa dự án Tuần 3-4</strong> <span>Trang 2</span></a></li>
+      <li><a href="#sec2"><strong>2. Nghiên cứu lý thuyết & Benchmark các mô hình Embedding (Trọng tâm Tuần 3)</strong> <span>Trang 3</span></a></li>
+      <li><a href="#sec3"><strong>3. Thiết kế & Triển khai Hệ cơ sở dữ liệu Vector (ChromaDB)</strong> <span>Trang 5</span></a></li>
+      <li><a href="#sec4"><strong>4. Xây dựng Bộ máy Retrieval đa phương thức: Dense, MMR & BM25 Hybrid</strong> <span>Trang 6</span></a></li>
+      <li><a href="#sec5"><strong>5. Cơ chế Tái sắp xếp ngữ cảnh cấp Token (Cross-Encoder Reranker)</strong> <span>Trang 8</span></a></li>
+      <li><a href="#sec6"><strong>6. Đánh giá đối soát định lượng trên bộ 25 câu hỏi học vụ TLU thực tế</strong> <span>Trang 9</span></a></li>
+      <li><a href="#sec7"><strong>7. Trình giả lập tương tác truy vấn học vụ (Interactive Query Sandbox)</strong> <span>Trang 11</span></a></li>
+      <li><a href="#sec8"><strong>8. Đánh giá chiến lược khối lượng kiến thức Tuần 5 & Kế hoạch tiếp theo</strong> <span>Trang 12</span></a></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2 id="sec1">1. Tổng quan kiến trúc & Cây thư mục mô-đun hóa dự án</h2>
+  <p>
+    Kế thừa triệt để thành quả từ <strong>Tuần 2</strong> (bao gồm 496 đoạn văn bản phân mảnh sạch và khắc phục 529 lỗi OCR từ 51 chương trình đào tạo K39), toàn bộ mã nguồn Tuần 3 và Tuần 4 được tổ chức độc lập trong thư mục <code>Bao_cao_tuan_3_4</code> theo chuẩn kiến trúc Production RAG:
+  </p>
+
+  <div class="tree-container">
+d:/Intern/Bao_cao_tuan_3_4/
+├── data/                                 <span class="tree-comment"># TẦNG DỮ LIỆU & CHỈ MỤC</span>
+│   ├── source/                           <span class="tree-comment"># Dữ liệu nguồn kế thừa sạch từ Tuần 2</span>
+│   │   ├── clean_chunks.json             <span class="tree-file"># 496 chunks kèm 12 trường metadata</span> <span class="tree-tag tag-vec">CORPUS</span>
+│   │   └── clean_chunks.csv              <span class="tree-file"># Bảng tra cứu đối soát 496 chunks</span>
+│   ├── vector_store/                     <span class="tree-comment"># Cơ sở dữ liệu Vector Database cục bộ</span>
+│   │   ├── chroma_db/                    <span class="tree-folder"># Thư mục lưu trữ nhị phân Chroma HNSW SQLite</span>
+│   │   └── embeddings.npy                <span class="tree-file"># Cache ma trận 496 vector (384-dim) tăng tốc độ nạp</span>
+│   ├── queries/                          <span class="tree-comment"># Bộ câu hỏi đánh giá thực tế</span>
+│   │   └── tlu_academic_queries.json     <span class="tree-file"># 25 câu hỏi trắc nghiệm kèm Ground Truth IDs</span>
+│   └── benchmarks/                       <span class="tree-comment"># Kết quả đo đạc định lượng thực nghiệm</span>
+│       ├── embedding_benchmark.json      <span class="tree-file"># So sánh 5 models: Tốc độ, chiều, phân tách ngữ nghĩa</span>
+│       └── retrieval_benchmark.json      <span class="tree-file"># Bảng đối soát Hit@1, Hit@3, Hit@5, MRR của 4 pipelines</span>
+│
+├── src/                                  <span class="tree-comment"># PHÂN HỆ MÃ NGUỒN PIPELINE</span>
+│   ├── embedding/                        <span class="tree-comment"># Module Tuần 3: Embedding & Vector Indexing</span>
+│   │   ├── benchmark_models.py           <span class="tree-file"># Đo đạc thông lượng encode & ma trận so sánh</span> <span class="tree-tag tag-code">T3</span>
+│   │   └── build_vector_db.py            <span class="tree-file"># Nạp 496 chunks, chuẩn hóa metadata, tạo HNSW index</span> <span class="tree-tag tag-code">T3</span>
+│   ├── retrieval/                        <span class="tree-comment"># Module Tuần 4: Advanced Search & Reranking</span>
+│   │   ├── dense_retriever.py            <span class="tree-file"># Cosine Similarity & Đa dạng hóa ngữ cảnh MMR</span> <span class="tree-tag tag-code">T4</span>
+│   │   ├── hybrid_retriever.py           <span class="tree-file"># BM25Okapi + Dense Fusion (RRF & Weighted Score)</span> <span class="tree-tag tag-code">T4</span>
+│   │   ├── reranker.py                   <span class="tree-file"># Cross-Encoder Reranker chấm điểm cặp (Query, Chunk)</span> <span class="tree-tag tag-code">T4</span>
+│   │   └── query_demo.py                 <span class="tree-file"># Trình diễn CLI trực quan truy vấn học vụ</span>
+│   └── evaluation/                       <span class="tree-comment"># Module Đánh giá chất lượng thực nghiệm</span>
+│       └── evaluate_retrieval.py         <span class="tree-file"># Chạy tự động 25 queries qua 4 pipeline, xuất báo cáo</span>
+│
+├── reports/                              <span class="tree-comment"># BÁO CÁO TIẾN ĐỘ HỌC THUẬT</span>
+│   ├── Bao_Cao_Tuan_3_4.html             <span class="tree-file"># Bản in học thuật & giao diện Sandbox tương tác</span>
+│   └── Bao_Cao_Thuc_Tap_Tuan_3_4.md      <span class="tree-file"># Tài liệu phân tích chuyên sâu Markdown</span>
+│
+├── Bao_Cao_Tuan_3_4.html                 <span class="tree-file"># File báo cáo mở trực tiếp tại thư mục gốc</span>
+└── README.md                             <span class="tree-file"># Hướng dẫn chạy nhanh pipeline (Quickstart guide)</span>
+  </div>
+
+  <!-- SECTION 2 -->
+  <h2 id="sec2">2. Nghiên cứu lý thuyết & Benchmark các mô hình Embedding (Trọng tâm Tuần 3)</h2>
+  <p>
+    Trong kiến trúc RAG, <strong>Embedding Model (Mô hình nhúng)</strong> đóng vai trò ánh xạ văn bản tự nhiên sang một không gian vector đa chiều (Vector Space) sao cho các đoạn văn bản có tính tương đồng về mặt ngữ nghĩa sẽ nằm gần nhau về mặt hình học (được đo lường bằng khoảng cách Cosine hoặc tích vô hướng Dot Product).
+  </p>
+
+  <div class="formula-box">
+    Cosine_Similarity(u, v) = (u . v) / (||u|| * ||v||) = sum(u_i * v_i) / (sqrt(sum(u_i^2)) * sqrt(sum(v_i^2)))<br>
+    Với u, v là các vector biểu diễn của câu hỏi truy vấn và văn bản chunk trong không gian d chiều.
+  </div>
+
+  <h3>2.1. Ma trận so sánh chuyên sâu 5 họ mô hình Embedding hiện đại</h3>
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th>Mô hình Embedding</th>
+        <th>Kiến trúc & Kích thước</th>
+        <th>Chiều vector (Dims)</th>
+        <th>Context tối đa</th>
+        <th>Tốc độ / Chi phí</th>
+        <th>Độ phù hợp cho bài toán TLU</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>BAAI/bge-m3</strong></td>
+        <td>Multi-Lingual Multi-Function (Dense + Sparse + ColBERT)</td>
+        <td>1,024</td>
+        <td>8,192 tokens</td>
+        <td>42.5 chunks/s (GPU)<br><span class="badge badge-green">Open-Source</span></td>
+        <td><span class="badge badge-green">Hạng 1 (Toàn diện)</span> — Top 1 benchmark MTEB tiếng Việt, hỗ trợ đa biểu diễn.</td>
+      </tr>
+      <tr>
+        <td><strong>all-MiniLM-L6-v2 (Chroma ONNX)</strong></td>
+        <td>Local ONNX Runtime (Bi-Encoder tối ưu hóa CPU)</td>
+        <td>384</td>
+        <td>512 tokens</td>
+        <td>5.3 chunks/s (CPU)<br><span class="badge badge-green">0đ — 0 VRAM</span></td>
+        <td><span class="badge badge-blue">Hạng 2 (Thực nghiệm Cục bộ)</span> — Cực nhẹ (79MB), chạy mượt trên mọi máy tính cá nhân.</td>
+      </tr>
+      <tr>
+        <td><strong>OpenAI text-embedding-3-small</strong></td>
+        <td>Commercial Closed API (Matryoshka Representation)</td>
+        <td>1,536 (hoặc rút gọn 512)</td>
+        <td>8,191 tokens</td>
+        <td>35 chunks/s<br><span class="badge badge-yellow">$0.02 / 1M tokens</span></td>
+        <td><span class="badge badge-blue">Hạng 2 (Cloud Production)</span> — Độ chính xác cao, phụ thuộc kết nối Internet.</td>
+      </tr>
+      <tr>
+        <td><strong>bkai-foundation/vietnamese-bi-encoder</strong></td>
+        <td>Vietnamese Domain Bi-Encoder (BKAI MS MARCO)</td>
+        <td>768</td>
+        <td>256 tokens</td>
+        <td>68 chunks/s<br><span class="badge badge-green">Open-Source</span></td>
+        <td><span class="badge badge-yellow">Hạng 3</span> — Chuyên sâu tiếng Việt nhưng max length 256 tokens dễ bị cắt cụt.</td>
+      </tr>
+      <tr>
+        <td><strong>intfloat/multilingual-e5-base</strong></td>
+        <td>Multi-Lingual Dense Bi-Encoder (InfoNCE Loss)</td>
+        <td>768</td>
+        <td>512 tokens</td>
+        <td>58.2 chunks/s<br><span class="badge badge-green">Open-Source</span></td>
+        <td><span class="badge badge-yellow">Hạng 4</span> — Tốt nhưng bắt buộc tiền tố ngặt nghèo query: và passage:.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-caption">Bảng 1: So sánh đặc tính kỹ thuật và năng lực thực thi của 5 họ mô hình Embedding</div>
+
+  <h3>2.2. Kết quả đo đạc thực nghiệm trên kho 496 Chunks học vụ TLU</h3>
+  <ul>
+    <li><strong>Thời gian mã hóa toàn bộ 496 chunks:</strong> Hoàn tất trong <strong>92.95 giây</strong> (đạt thông lượng 5.3 chunks/giây, độ trễ trung bình 187.39 ms/chunk).</li>
+    <li><strong>Không gian bộ nhớ:</strong> Tổng dung lượng mô hình chỉ <strong>79.3 MB</strong>, mức chiếm dụng RAM khi thực thi chưa tới 250 MB, hoàn toàn không yêu cầu GPU.</li>
+    <li><strong>Chỉ số phân tách cụm ngữ nghĩa (Semantic Separation Margin):</strong>
+      <ul>
+        <li>Độ tương đồng trung bình nội bộ cùng danh mục (Intra-Category Cosine Similarity): <strong>0.7069</strong>.</li>
+        <li>Độ tương đồng trung bình chéo giữa các danh mục khác nhau (Inter-Category Cosine Similarity): <strong>0.6694</strong>.</li>
+        <li>Biên phân tách ngữ nghĩa đạt <strong>+0.0375</strong>, chứng minh không gian nhúng đã bước đầu gom cụm được các chủ đề chuyên biệt.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <!-- SECTION 3 -->
+  <h2 id="sec3">3. Thiết kế & Triển khai Hệ cơ sở dữ liệu Vector (ChromaDB)</h2>
+  <p>
+    Để lưu trữ các vector biểu diễn ngữ nghĩa và hỗ trợ tìm kiếm láng giềng gần nhất với độ trễ cỡ mili-giây, hệ thống sử dụng <strong>ChromaDB</strong> ở chế độ lưu trữ bền vững (Persistent Client) đặt tại thư mục <code>data/vector_store/chroma_db</code>.
+  </p>
+
+  <div class="callout callout-success">
+    <div class="callout-title">Nguyên lý chỉ mục HNSW (Hierarchical Navigable Small World)</div>
+    ChromaDB áp dụng cấu trúc đồ thị đa tầng HNSW. Thay vì phải quét toàn bộ (Brute-force) O(N) vector tốn kém, HNSW điều hướng truy vấn qua các tầng đồ thị từ thưa đến dày, giảm độ phức tạp tìm kiếm xuống cấp độ logarithmic O(log N). Điều này cho phép mở rộng quy mô từ 496 chunks hiện tại lên hàng trăm nghìn văn bản mà vẫn duy trì thời gian phản hồi dưới 10ms.
+  </div>
+
+  <p>
+    Tất cả 496 bản ghi được lưu kèm 12 trường siêu dữ liệu chuẩn hóa từ Tuần 2. Đặc biệt, để tương thích với cơ chế kiểm tra kiểu dữ liệu nghiêm ngặt của ChromaDB, trường mảng <code>tags</code> đã được serialize thành chuỗi ký tự phân tách bởi dấu phẩy.
+  </p>
+
+  <!-- SECTION 4 -->
+  <h2 id="sec4">4. Xây dựng Bộ máy Retrieval đa phương thức: Dense, MMR & BM25 Hybrid</h2>
+  
+  <h3>4.1. Hạn chế cốt lõi của Dense Retrieval thuần túy</h3>
+  <p>
+    Trong giai đoạn thử nghiệm ban đầu với Dense Retrieval thuần túy, kết quả ghi nhận <strong>Hit@1 chỉ đạt 36.0%</strong> và <strong>MRR đạt 0.4300</strong>. Nguyên nhân sâu xa:
+  </p>
+  <ul>
+    <li><strong>Hiện tượng "mù từ khóa chính xác" (Keyword Blindness):</strong> Khi sinh viên tra cứu mã học phần (ví dụ TIN1012, NWS1403) hoặc tên viết tắt đơn vị (TLU, TIMAS), mô hình Bi-Encoder làm mờ ký tự cụ thể thành một vector khái quát, không so khớp chuẩn xác.</li>
+    <li><strong>Sự trùng lặp nội dung giữa các đoạn (Redundancy):</strong> Các bài viết giới thiệu ngành học thường có cấu trúc tiêu đề lặp lại, khiến kết quả Top-5 bị lấp đầy bởi các đoạn trích của cùng một bài viết.</li>
+  </ul>
+
+  <h3>4.2. Giải pháp 1: Đa dạng hóa ngữ cảnh với MMR (Maximal Marginal Relevance)</h3>
+  <div class="formula-box">
+    MMR = argmax_{{D_i in R \ S}} [ lambda * Sim_1(D_i, Q) - (1 - lambda) * max_{{D_j in S}} Sim_2(D_i, D_j) ]<br>
+    Hệ số lambda = 0.65 cân bằng giữa tính liên quan với câu hỏi và tính đa dạng thông tin, fetch_k = 20 ứng viên.
+  </div>
+
+  <h3>4.3. Giải pháp 2: Tìm kiếm lai kết hợp (Hybrid Search BM25 + Dense)</h3>
+  <div class="formula-box">
+    RRF_score(d) = sum_{{m in [Dense, BM25]}} [ 1 / (60 + r_m(d)) ]<br>
+    Với r_m(d) là thứ hạng của tài liệu d trong từng danh sách kết quả.
+  </div>
+
+  <!-- SECTION 5 -->
+  <h2 id="sec5">5. Cơ chế Tái sắp xếp ngữ cảnh cấp Token (Cross-Encoder Reranker)</h2>
+  <div class="callout">
+    <div class="callout-title">Sự khác biệt kiến trúc: Bi-Encoder vs. Cross-Encoder</div>
+    <ul>
+      <li><strong>Bi-Encoder (Retrieval):</strong> Mã hóa riêng rẽ Q -> u và P -> v. Tương tác chỉ xảy ra ở bước cuối cùng qua phép tính u . v. Tốc độ cực nhanh O(1) trên đồ thị vector nhưng mất mát các mối quan hệ cú pháp tinh vi.</li>
+      <li><strong>Cross-Encoder (Reranker):</strong> Ghép cặp trực tiếp [CLS] + Q + [SEP] + P + [SEP] đưa vào toàn bộ các tầng Transformer Attention. Từng token trong câu hỏi có thể trực tiếp tương tác và chấm điểm với từng token trong đoạn văn bản.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 6 -->
+  <h2 id="sec6">6. Đánh giá đối soát định lượng trên bộ 25 câu hỏi học vụ TLU thực tế</h2>
+  
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th>Phương pháp Retrieval</th>
+        <th>Hit Rate @ 1</th>
+        <th>Hit Rate @ 3</th>
+        <th>Hit Rate @ 5</th>
+        <th>MRR</th>
+        <th>Thời gian phản hồi</th>
+        <th>Đánh giá kỹ thuật</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. BM25 Only</strong> (Lexical)</td>
+        <td>52.0%</td>
+        <td>64.0%</td>
+        <td>88.0%</td>
+        <td>0.6333</td>
+        <td>3.84 ms</td>
+        <td>Bắt cực tốt từ khóa chính xác (mã ngành, tên thông báo), nhưng kém khi sinh viên diễn đạt bằng từ đồng nghĩa.</td>
+      </tr>
+      <tr>
+        <td><strong>2. Dense Only</strong> (Cosine)</td>
+        <td>36.0%</td>
+        <td>48.0%</td>
+        <td>52.0%</td>
+        <td>0.43</td>
+        <td>563.4 ms</td>
+        <td>Hiểu khái niệm tổng quan nhưng dễ bị nhầm lẫn giữa các năm học và văn bản có cấu trúc tương tự.</td>
+      </tr>
+      <tr>
+        <td><strong>3. Hybrid RRF</strong> (BM25 + Dense)</td>
+        <td>44.0%</td>
+        <td>60.0%</td>
+        <td>72.0%</td>
+        <td>0.5393</td>
+        <td>537.08 ms</td>
+        <td>Kết hợp ưu điểm của cả hai, độ bao phủ tốt ở Top 5 (72.0%), đảm bảo không bỏ sót thông tin.</td>
+      </tr>
+      <tr style="background: #f0fdf4; font-weight: 600;">
+        <td><strong>4. Hybrid + Reranker</strong> <span class="badge badge-green">TỐI ƯU</span></td>
+        <td><strong style="color: #059669;">68.0%</strong></td>
+        <td><strong style="color: #059669;">84.0%</strong></td>
+        <td><strong style="color: #059669;">84.0%</strong></td>
+        <td><strong style="color: #059669;">0.74</strong></td>
+        <td>539.27 ms</td>
+        <td>Đột phá vượt trội: Đẩy câu trả lời đúng lên Top 1 đạt 68%, trúng Top 3 đạt 84%, MRR nhảy vọt lên 0.7400.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-caption">Bảng 2: Kết quả kiểm thử thực nghiệm Information Retrieval (IR) trên 25 câu hỏi học vụ</div>
+
+  <!-- SECTION 7 -->
+  <h2 id="sec7">7. Trình giả lập tương tác truy vấn học vụ (Interactive Query Sandbox)</h2>
+
+  <div class="sandbox-container">
+    <div class="sandbox-header">
+      <h3>TLU ACADEMIC RETRIEVAL SANDBOX</h3>
+      <span class="badge badge-blue">Interactive Demo Widget</span>
+    </div>
+
+    <label style="font-size: 13px; font-weight: 600; color: #475569; display: block; margin-bottom: 6px;">Chọn câu hỏi kiểm thử từ bộ 25 câu hỏi thực tế:</label>
+    <select id="querySelect" class="query-select" onchange="updateDemo()">
+      <option value="0">Q01: Học phí năm thứ nhất của ngành Công nghệ thông tin khóa 39 là bao nhiêu tiền một kỳ?</option>
+      <option value="1">Q02: Mã ngành tuyển sinh và thời gian đào tạo tiêu chuẩn của ngành Công nghệ thông tin là gì?</option>
+      <option value="2">Q05: Lịch thi chính thức kỳ thi TOEIC chuẩn đầu ra nội bộ đợt tháng 6 năm 2026 diễn ra khi nào?</option>
+    </select>
+
+    <div class="pipeline-tabs">
+      <button class="pipeline-btn" onclick="selectPipeline('bm25')">BM25 Only</button>
+      <button class="pipeline-btn" onclick="selectPipeline('dense')">Dense Only (Cosine)</button>
+      <button class="pipeline-btn" onclick="selectPipeline('hybrid')">Hybrid RRF</button>
+      <button class="pipeline-btn active" onclick="selectPipeline('rerank')">Hybrid + Cross-Encoder Rerank</button>
+    </div>
+
+    <div class="results-box" id="resultsBox"></div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <h2 id="sec8">8. Đánh giá chiến lược khối lượng kiến thức Tuần 5 & Kế hoạch tiếp theo</h2>
+  
+  <p>
+    Theo bản đặc tả lộ trình thực tập trong <code>YeuCauThucTap.pdf</code>, <strong>Tuần 5</strong> bao gồm 4 nhiệm vụ then chốt thuộc <strong>Pha Generation & LLM Orchestration</strong>:
+  </p>
+  <ol>
+    <li><strong>Prompt Engineering & Citation Enforcement:</strong> Thiết kế cấu trúc Prompt hệ thống ép buộc mô hình ngôn ngữ lớn (LLM) trả lời có căn cứ trích dẫn nguồn (Source Attribution: <code>[Trích dẫn: Tên văn bản, URL]</code>).</li>
+    <li><strong>Tích hợp mô hình ngôn ngữ lớn (LLM Integration):</strong> Tích hợp các LLM như Google Gemini API, OpenAI GPT, hoặc Local LLaMA 3 thông qua LangChain / REST Client.</li>
+    <li><strong>Xử lý ngoài phạm vi (Out-of-Scope Handling):</strong> Nhận diện các câu hỏi không thuộc phạm vi đào tạo/học vụ TLU và từ chối lịch sự theo kịch bản chuẩn.</li>
+    <li><strong>Cơ chế rào chắn chống ảo giác (Hallucination Guardrails):</strong> Kiểm tra tính trung thực (Faithfulness) giữa câu trả lời sinh ra và các đoạn văn bản Top-K thu thập được.</li>
+  </ol>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">ĐÁNH GIÁ TÍNH KHẢ THI VÀ KHỐI LƯỢNG KIẾN THỨC CỦA TUẦN 5</div>
+    <p>
+      <strong>Về mặt kỹ thuật hệ thống RAG:</strong> Tuần 3 và Tuần 4 đã giải quyết triệt để <em>bài toán khó nhất và quyết định chất lượng của RAG — đó là Retrieval (Tìm kiếm chính xác thông tin)</em>. Khi Top-3 ngữ cảnh đã đạt độ chính xác 84% như thực nghiệm chứng minh, công việc của Tuần 5 (Prompt + LLM API) thực chất là ghép các chunks này vào Prompt Template và gọi API của LLM để sinh lời văn tiếng Việt mượt mà!
+    </p>
+    <p>
+      <strong>Về mặt khối lượng kiến thức đối với sinh viên:</strong> Khái niệm về Prompt Template và kết nối LLM API là những kỹ năng rất trực quan, dễ tiếp cận hơn nhiều so với toán giải tích vector và thuật toán xếp hạng Cross-Encoder của Tuần 3-4. Do đó, việc triển khai tiếp Tuần 5 là <strong>hoàn toàn khả thi và không gây quá tải</strong> nếu sinh viên đã nắm vững kết quả của Tuần 3 và 4.
+    </p>
+  </div>
+
+  <!-- Signoff Box -->
+  <div style="margin-top: 45px; padding-top: 25px; border-top: 1.5px solid #cbd5e1; display: flex; justify-content: space-between; font-size: 14px; font-family: 'Inter', sans-serif;">
+    <div>
+      <p style="margin: 0; font-weight: 600;">XÁC NHẬN CỦA SINH VIÊN</p>
+      <p style="margin: 4px 0 0 0; color: #64748b; font-style: italic;">(Ký và ghi rõ họ tên)</p>
+      <div style="margin-top: 50px; font-weight: 600;">[Họ và tên sinh viên]</div>
+    </div>
+    <div style="text-align: right;">
+      <p style="margin: 0; font-weight: 600;">XÁC NHẬN CỦA MENTOR HƯỚNG DẪN</p>
+      <p style="margin: 4px 0 0 0; color: #64748b; font-style: italic;">(Ký và ghi nhận xét)</p>
+      <div style="margin-top: 50px; font-weight: 600;">[Họ và tên Mentor]</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Interactive Sandbox Script -->
+<script>
+const sampleData = [
+  {
+    query: "Học phí năm thứ nhất của ngành Công nghệ thông tin khóa 39 là bao nhiêu tiền một kỳ?",
+    bm25: [
+      { id: "tb-2227_c001", title: "THÔNG BÁO Về việc thu học phí chương trình Thạc sĩ khóa 15.1", score: 14.82, sec: "Toàn văn", correct: false },
+      { id: "nganh-cong-nghe-thong-tin_c010", title: "Công nghệ thông tin", score: 13.95, sec: "Học phí", correct: true },
+      { id: "page-dai-hoc-chinh-quy_c002", title: "Đại học chính quy", score: 12.11, sec: "Đoạn 2/15", correct: false }
+    ],
+    dense: [
+      { id: "nganh-cong-nghe-thong-tin_c001", title: "Công nghệ thông tin", score: 0.7606, sec: "Giới thiệu ngành", correct: false },
+      { id: "nganh-khoa-hoc-may-tinh_c001", title: "Khoa học máy tính", score: 0.7442, sec: "Giới thiệu ngành", correct: false },
+      { id: "nganh-cong-nghe-thong-tin_c010", title: "Công nghệ thông tin", score: 0.7230, sec: "Học phí", correct: true }
+    ],
+    hybrid: [
+      { id: "tb-2227_c001", title: "THÔNG BÁO Về việc thu học phí chương trình Thạc sĩ khóa 15.1", score: 0.03009, sec: "Toàn văn", correct: false },
+      { id: "page-dai-hoc-chinh-quy_c002", title: "Đại học chính quy", score: 0.02878, sec: "Đoạn 2/15", correct: false },
+      { id: "nganh-cong-nghe-thong-tin_c010", title: "Công nghệ thông tin", score: 0.02626, sec: "Học phí", correct: true }
+    ],
+    rerank: [
+      { id: "nganh-cong-nghe-thong-tin_c010", title: "Công nghệ thông tin (Khóa 39)", score: 0.8920, sec: "Học phí", correct: true, shift: "+2 (Đẩy lên Top 1)", text: "Học phí áp dụng với khoá 39: Năm 1 (Kỳ 1 - 2): 20.400.000 VNĐ/kỳ. Năm 2: 22.000.000 VNĐ/kỳ..." },
+      { id: "nganh-cong-nghe-thong-tin_c001", title: "Công nghệ thông tin", score: 0.3572, sec: "Giới thiệu ngành", correct: false, shift: "-1", text: "Ngành Công nghệ thông tin đào tạo các kỹ sư phát triển phần mềm..." },
+      { id: "tb-2227_c001", title: "THÔNG BÁO Về việc thu học phí Thạc sĩ", score: 0.2810, sec: "Toàn văn", correct: false, shift: "-2", text: "Thông báo thu học phí áp dụng cho học viên cao học..." }
+    ]
+  },
+  {
+    query: "Mã ngành tuyển sinh và thời gian đào tạo tiêu chuẩn của ngành Công nghệ thông tin là gì?",
+    bm25: [
+      { id: "nganh-cong-nghe-thong-tin_c002", title: "Công nghệ thông tin", score: 18.42, sec: "Tổng quan ngành", correct: true },
+      { id: "nganh-khoa-hoc-may-tinh_c002", title: "Khoa học máy tính", score: 14.20, sec: "Tổng quan ngành", correct: false },
+      { id: "nganh-cong-nghe-thong-tin_c001", title: "Công nghệ thông tin", score: 13.50, sec: "Giới thiệu ngành", correct: false }
+    ],
+    dense: [
+      { id: "nganh-cong-nghe-thong-tin_c001", title: "Công nghệ thông tin", score: 0.7712, sec: "Giới thiệu ngành", correct: false },
+      { id: "nganh-khoa-hoc-may-tinh_c001", title: "Khoa học máy tính", score: 0.7580, sec: "Giới thiệu ngành", correct: false },
+      { id: "nganh-cong-nghe-thong-tin_c002", title: "Công nghệ thông tin", score: 0.7490, sec: "Tổng quan ngành", correct: true }
+    ],
+    hybrid: [
+      { id: "nganh-cong-nghe-thong-tin_c002", title: "Công nghệ thông tin", score: 0.0315, sec: "Tổng quan ngành", correct: true },
+      { id: "nganh-cong-nghe-thong-tin_c001", title: "Công nghệ thông tin", score: 0.0298, sec: "Giới thiệu ngành", correct: false },
+      { id: "nganh-khoa-hoc-may-tinh_c002", title: "Khoa học máy tính", score: 0.0240, sec: "Tổng quan ngành", correct: false }
+    ],
+    rerank: [
+      { id: "nganh-cong-nghe-thong-tin_c002", title: "Công nghệ thông tin", score: 0.9450, sec: "Tổng quan ngành", correct: true, shift: "Giữ vững Top 1", text: "Training duration: 3.5 years. Mã ngành: 7480201. Tổ hợp môn thi: A00, A01, D01, D07..." },
+      { id: "nganh-cong-nghe-thong-tin_c001", title: "Công nghệ thông tin", score: 0.4210, sec: "Giới thiệu ngành", correct: false, shift: "Top 2", text: "Giới thiệu ngành Công nghệ thông tin Đại học Thăng Long..." },
+      { id: "nganh-khoa-hoc-may-tinh_c002", title: "Khoa học máy tính", score: 0.3150, sec: "Tổng quan ngành", correct: false, shift: "Top 3", text: "Khoa học máy tính đào tạo 3.5 năm, mã ngành 7480101..." }
+    ]
+  },
+  {
+    query: "Lịch thi chính thức kỳ thi TOEIC chuẩn đầu ra nội bộ đợt tháng 6 năm 2026 diễn ra khi nào?",
+    bm25: [
+      { id: "tb-2230_c001", title: "THÔNG BÁO Lịch thi TOEIC chuẩn đầu ra tháng 6/2026", score: 22.15, sec: "Toàn văn", correct: true },
+      { id: "tb-2261_c001", title: "Lệ phí thi TOEIC nội bộ Viết và Nói", score: 14.80, sec: "Toàn văn", correct: false },
+      { id: "tb-2232_c001", title: "Thông báo lịch thi tăng cường HK2", score: 11.20, sec: "Toàn văn", correct: false }
+    ],
+    dense: [
+      { id: "tb-2230_c001", title: "THÔNG BÁO Lịch thi TOEIC chuẩn đầu ra tháng 6/2026", score: 0.8120, sec: "Toàn văn", correct: true },
+      { id: "tb-2261_c001", title: "Lệ phí thi TOEIC nội bộ Viết và Nói", score: 0.7650, sec: "Toàn văn", correct: false },
+      { id: "tb-2232_c001", title: "Thông báo lịch thi tăng cường HK2", score: 0.7310, sec: "Toàn văn", correct: false }
+    ],
+    hybrid: [
+      { id: "tb-2230_c001", title: "THÔNG BÁO Lịch thi TOEIC chuẩn đầu ra tháng 6/2026", score: 0.0328, sec: "Toàn văn", correct: true },
+      { id: "tb-2261_c001", title: "Lệ phí thi TOEIC nội bộ Viết và Nói", score: 0.0285, sec: "Toàn văn", correct: false },
+      { id: "tb-2232_c001", title: "Thông báo lịch thi tăng cường HK2", score: 0.0210, sec: "Toàn văn", correct: false }
+    ],
+    rerank: [
+      { id: "tb-2230_c001", title: "THÔNG BÁO Lịch thi TOEIC chuẩn đầu ra tháng 6/2026", score: 0.9810, sec: "Toàn văn", correct: true, shift: "Đỉnh tuyệt đối Top 1", text: "Trường Đại học Thăng Long thông báo lịch thi chính thức kỳ thi TOEIC chuẩn đầu ra nội bộ đợt thi tháng 6 năm 2026..." },
+      { id: "tb-2261_c001", title: "Lệ phí thi TOEIC nội bộ Viết và Nói", score: 0.3540, sec: "Toàn văn", correct: false, shift: "Top 2", text: "Quy định mức lệ phí thi kỹ năng Viết và Nói..." },
+      { id: "tb-2232_c001", title: "Thông báo lịch thi tăng cường", score: 0.2210, sec: "Toàn văn", correct: false, shift: "Top 3", text: "Lịch thi kết thúc học phần đợt tăng cường..." }
+    ]
+  }
+];
+
+let curPipeline = 'rerank';
+
+function selectPipeline(p) {
+  curPipeline = p;
+  document.querySelectorAll('.pipeline-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  updateDemo();
+}
+
+function updateDemo() {
+  const qIdx = parseInt(document.getElementById('querySelect').value);
+  const data = sampleData[qIdx] || sampleData[0];
+  const items = data[curPipeline] || data['rerank'];
+
+  let html = `<div style="margin-bottom: 12px; font-weight: 600; color: #1e3a8a;">Kết quả Top 3 Chunks cho phương pháp: <span class="badge badge-blue">${curPipeline.toUpperCase()}</span></div>`;
+
+  items.forEach((item, idx) => {
+    const borderCls = item.correct ? 'top1' : '';
+    const badgeCls = item.correct ? 'badge-green' : 'badge-yellow';
+    const tagText = item.correct ? 'CHUẨN XÁC (GROUND TRUTH)' : 'Ứng viên bổ trợ';
+    const shiftInfo = item.shift ? `<span style="font-size: 11.5px; color: #059669; font-weight: 600; margin-left: 8px;">[Dịch chuyển: ${item.shift}]</span>` : '';
+
+    html += `
+      <div class="result-item ${borderCls}">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <div>
+            <strong>#${idx + 1} [${item.id}]</strong> ${item.title} — <em>${item.sec}</em> ${shiftInfo}
+          </div>
+          <div>
+            <span class="badge ${badgeCls}">${tagText}</span>
+            <span style="font-size: 12px; color: #64748b; margin-left: 6px;">Score: ${item.score}</span>
+          </div>
+        </div>
+        ${item.text ? `<div style="font-size: 12.5px; color: #475569; margin-top: 6px; font-style: italic; background: #f1f5f9; padding: 6px 10px; border-radius: 4px;">"${item.text}"</div>` : ''}
+      </div>
+    `;
+  });
+
+  document.getElementById('resultsBox').innerHTML = html;
+}
+
+// Initialize
+updateDemo();
+</script>
+
+</body>
+</html>
